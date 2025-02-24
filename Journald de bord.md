@@ -51,24 +51,76 @@ La partie se termine lorsqu'un joueur capture la dernière graine de son adversa
 
 Le principe du jeu est donc de faire en sorte de capturer plus de graines que d'en perdre. Il s'agit de savoir bien compter, prévoir les coups à l'avance et d'avoir une certaine stratégie qui permettra de capturer et de défendre, comme aux échecs.
 
-Le but de mon TM n'est pas de créer un adversaire imbattable, alors je vais vais sorte que mon robot ne prévoie qu'un tour ou 2 d'avance.
 
-### Conditions (aspect logistique)
+
+### Conditions (aspect logique)
+Je me disais que je pourrais programmer 3 niveaux, afin que tout le monde puisse jouer et trouver son niveau et aussi qu'il y ait un robot imbattable, qui aurait un programme plus complexe, une véritable machine.
 Une fois toutes les règles expliquées et programmées, le robot devra :
 
-1. Faire tourner chacune des 16 possibilités
-2. Choisir les possibilités qui permettent la capture et faire tourner ensuite les 16 possibilités de l'adversaire pour chacun des coups permettant la capture. 
-    - Capture = nmbr de graines se situant dans le trou d'en face (revoir règles du jeu)
-    - Si aucun coup pouvant être joué par le robot ne permet la capture, calculer pour tous les coups du robot --> gain = 0
-3. Parmis les 16 possibilités de l'adversaire, choisir celle qui permettra de capturer le plus de graines du robot pour chaque coup calculé et choisi par le robot.
-    - Si plusieurs coups reviennent au même résultat, choisir un coup aléatoirement parmis ceux-là
-4. Comparer, pour chaque coup calculé et choisi initialement, le gain et la perte, c'est-à-dire le nombre de graine que le robot capture et le nombre de graine que le robot perd, au maximum.
-    - gain = capture
-    - perte = capture adversaire
-    - Différence = gain - perte
-5. Choisir le coup oú la différence est la plus élevée (elle peut être positive ou négative) et le jouer. 
-    - Si plusieurs cas donnent le même résultat, choisir un coup aléatoirement parmis ces cas.
+#### niveau débutant
 
+1. Choisir le gain maximal
+    - gain max = capture maximale parmis les 16 coups
+    - Si plusieurs gain max identique, choisir le premier
+
+ Si le gain maximal = 0 : 
+
+ 2. Calculer la perte maximale
+    - perte max = gain max de l'adversaire
+    - Si plusieurs perte max identique, choisir la première
+
+
+#### niveau intermédiaire
+
+
+2. Pour chaque coup, calculer le gain et la perte par rapport aux 16 possibilités de l'adversaire
+    - gain = nombre de graibe pouvant être capturées
+    - perte n = gain de l'adversaire une fois que le coup est joué (il y a 16 pertes)
+3. Parmis les 16 pertes par coup, choisir la perte maximale
+    - perte n = perte max n
+    - Si plusieurs pertes reviennent au même résultat, calculer le gain potentiel de chacune des pertes identiques
+        - gain pot = perte de l'adversaire (il y a 16 gains pot pour chaque perte identique)
+    1. choisir le gain potentiel minimal pour une perte identique. 
+    2. Il y a donc autant de gain pot min que de perte identiques, parmis ceux la, choisir le gain potentiel minimal le plus bas
+        - perte max n = gain potentiel minimal minimal
+    3. Revenir à l'étape 3. 
+4. Calculer la différence de chaque coup
+    - différence = gain - perte max
+5. Choisir le coup oú la différence est la plus élevée (elle peut être positive ou négative) et le jouer. 
+    - Si plusieurs cas donnent le même résultat, choisir le premier cas
+
+#### niveau imbattable
+
+2. Pour chaque coup, faire tourner les 16 possibilités de l'adversaire et calculer le gain et la perte du robot pour chaque coup.
+    - gain x = nombre de graines que le robot capture (il y en aurait 16) le gain peut être égal à 0
+    - perte = gain x de l'adversaire (il y a 16 pertes par coup)
+3. Pour une perte d'un coup, calculer le gain potentiel d'une perte que le robot pourrait avoir en faisant tourner les 16 possibilité du robot après chaque perte.
+    - gain pot x = gain du robot après chaque perte (il y a 16 gains potentiels par perte)
+4. Calculer la perte potentielle après un gain potentiel en faisant tourner les 16 possibilités d'un gain potentiel.
+    - perte pot x = gain pot x de l'adversaire pour chaque gain potentiel du robot
+5. Pour chaque gain potentiel d'une perte, calculer les différences potentielles entre le gain pot et la perte pot
+    - différence pot n = gain pot - perte pot n (il y a 16 différences potentielles par gain potentiel)
+6. Choisir la différence potentielle la plus élevée (elle peut être négative) pour chaque gain potentiel.
+    - Si plusieurs différences potentielles sont les mêmes, cela veut dire que plusieurs pertes potentielles sont les mêmes.
+    Il faut alors calculer, pour chaque perte potentielle identique, le gain potentiel^2 en faisant tourner les 16 possibilités de chaque perte potentielle identique
+        - gain pot^2= perte pot de l'adversaire (Il y en a 16 par perte pot) 
+    Ensuite, choisir le gain pot^2 le plus élevé pour chaque perte pot 
+        - perte pot x = gain pot^2 max x
+    Choisir ensuite, parmis les pertes potentielles initialement identiques, la perte potentielle minimale.
+    Remplacer ensuite la perte potentielle par la perte potentielle minimale
+        - perte pot = perte pot min
+    Retourner à l'étape 5.
+    - gain pot x = différence pot max x
+7. Il y a alors 16 gains potentiels par perte, choisir le gain potentiel le plus élevé pour chaque perte
+    - perte x = gain pot max x 
+8. Calculer à présent les différences réelles pour chaque gain initial
+    - différence réelle n = gain - perte n (il y a 16 différences réelles par gain)
+9. Pour chaque gain, choisir la différence réelle la plus élevée (peut être négative)
+    - gain x = différence réelle max x
+    
+10. On a maintenant une différence réelle maximale par coup, choisir le gain le plus élevé parmis ces 16 coups et le jouer.
+    
+    
 ### Parcours
 
 1. -[x] aspect logique 
@@ -86,4 +138,8 @@ Une fois toutes les règles expliquées et programmées, le robot devra :
     - finalisation du projet
 
 ### Objectifs
-Je viens de finir la première étape, qui d'après moi, serait la plus simple et la plus rapide. Je pense qu'il serait temps de fixer le premier rendez-vous pour en parler. En terme de temps, je trouve que je m'en donne assez et j'avance à une vitesse favorable.
+Je viens de finir la première étape, 
+qui d'après moi, serait la plus simple et la plus rapide. Je pense qu'il serait temps de fixer le premier rendez-vous pour en parler. En terme de temps, je trouve que je m'en donne assez et j'avance à une vitesse favorable.
+
+## 24.02.25
+Aujourd'hui, j'ai vu mon mentor. Ca m'a beaucoup aidé car je me suis rendu compte qu'il fallait que je prenne un autre point de vue sur le travail et le réaliser par petites étapes. Par exemple, programmer l'interface visuel d'abord ensuite programmer ce qui se passe si je clique sur une graine ensuite programmer le jeu pour 2 joueurs réels etc...
