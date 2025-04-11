@@ -143,3 +143,43 @@ qui d'après moi, serait la plus simple et la plus rapide. Je pense qu'il serait
 
 ## 24.02.25
 Aujourd'hui, j'ai vu mon mentor. Ca m'a beaucoup aidé car je me suis rendu compte qu'il fallait que je prenne un autre point de vue sur le travail et le réaliser par petites étapes. Par exemple, programmer l'interface visuel d'abord ensuite programmer ce qui se passe si je clique sur une graine ensuite programmer le jeu pour 2 joueurs réels etc...
+
+## 11.04.25
+Ce sont les vacances de printemps : aujourd'hui je commence par programmer l'interface visuel. Mais avant ça, je me documente. Je me trouve à cheval entre la documentation et la programmation, dans le sens oú j'avance mon programme pas à pas, comme mon mentor l'avait dit dans l'ancien rendez-vous.
+J'ai modifié alors mon parcours pour donner ceci:
+
+
+1. -[ ] documentation et programmation
+    1. interface visuel
+    2. déplacement virtuel des pièces
+    3. adversaire réel (sur le même écran)
+    
+3. -[x] aspect logique (Cela déja étant fait, je l'introduirai dans mon programme plus tard.)
+    - but et principe du jeu
+    - conditions du robot
+4. -[ ] Finalisation du projet
+    1. Traduction de l'aspect logique en programme python
+    2. Ajout du programme dans le programme de base.
+
+### Commencement du programme 
+A l'aide du document Cours_Python.pdf mis à disposition sur teams par mon mentor, voici le début du programme :
+
+Le bao game est un jeu, je rappelle qui est composé de 8 trous, avec 2 graines par trou. Je commence alors par insérer un trou à l'aide de python. 
+Il faut d'abord mettre les fonctions nécessaires afin que le cercle apparaisse sur une fenêtre, comme spécifié dans le cours.
+Pour ça, j'ai décidé d'utiliser la fonction create_oval se trouvant à la page 70 du cours:
+
+     from tkinter import *
+
+     fen = Tk()
+
+     fen.geometry("600x600")
+
+    can = Canvas(fen, width=100, height=100)
+
+     can.grid()
+
+    can.create_oval (1,1,9,9)
+
+    fen.mainloop()  
+
+Sinon, le programme est mis à disposition sur un autre document. Donc une fois qu'on a réussi à dessiner un cercle, je vais dessiner le plateau entier, qui je rappelle est composé de 32 trous, avec 8 trous par ligne.
