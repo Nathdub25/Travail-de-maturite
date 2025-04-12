@@ -182,4 +182,82 @@ Pour ça, j'ai décidé d'utiliser la fonction create_oval se trouvant à la pag
 
     fen.mainloop()  
 
-Sinon, le programme est mis à disposition sur un autre document. Donc une fois qu'on a réussi à dessiner un cercle, je vais dessiner le plateau entier, qui je rappelle est composé de 32 trous, avec 8 trous par ligne.
+Sinon, le programme est mis à disposition sur un autre document. Donc une fois qu'on a réussi à dessiner un cercle, je vais dessiner le plateau entier, qui je rappelle est composé de 32 trous, avec 8 trous par ligne. Je commence alors à créer un rectangle, qui sera les limites du plateau:
+
+    from tkinter import *
+
+    fen = Tk()
+
+    fen.geometry("820x420")
+    can = Canvas(fen, width=820, height=600)
+    can.grid()
+    can.create_rectangle (10,10,810,410)
+    fen.mainloop()
+(J'ai un peu modifié les valeurs de la fenêtre afin que les longueurs correspondent bien). Maintenant, je divise le plateau en 4 lignes et 8 colonnes. Pour cela, j'ai décidé d'utiliser le code des lignes: 
+
+    can.create_line (10,100,810,100)
+
+Voici la première ligne. Je me suis dit que ça irait peut être plus vite si je les dessinais toutes d'un coup, alors j'ai décidé d'uiliser une boucle while, qui dessinerait une ligne et une colonne tous les "100" de l'axe x et y:
+
+    x = 110 
+    y = 110
+    while x < 820 : 
+        can.create_line (x,10,x,410)
+        can.create_line (10,y,810,y)
+        x = x + 100
+        y = y + 100
+
+(Cela fonctionne même si l'axe des x est plus grand que celui des y car mon espace de Canvas a été restreint pour l'axe y.) Maintenant, il faudrait mettre des trous un pour chaque carré du coup. J'ai décidé de dessiner des cercle qui ne touchent pas les côtés du carré de "10" :
+
+    can.create_oval (20,20,100,100)
+
+Encore une fois, dessiner tous les cercles du plateau prendrait une eternité. Alors j'ai encore utilisé la boucle while pour les dessiner tous les "100" de largeur et de longueur en même temps : 
+
+    cx = 20
+    cy = 20
+    z = 20
+    while z < 420:
+        while cx < 820 : 
+         can.create_oval (cx,z,cx + 80,z + 80)
+         cx = cx + 100
+         cy = cy + 100
+        z = z + 100
+        cx = 20
+        cy = 20
+    
+Maintenant, je vais rajouter une graine dans un trou et essayer de la faire bouger en cliquant dessus. Voici la graine, dessiné dans le premier trou :
+
+    can.create_oval (40,40,60,60,activewidth = 5)
+
+J'ai rajouté la fonction "activewidth = 5" afin que le cercle s'épaississe lorsque la souris passe dessus, cela permet au joueur de mieux visualiser le grain qu'il s'agit. En premier temps, j'ai fait en sorte que la graine soit séléctionnée lorsqu'on clique dessus. Pour ça, j'ai relié l'évènement "clic gauche" à la fonction "go" que j'ai défini en tant que "crée un oval de largeur 5" :
+
+    can.create_oval (40,40,60,60, activewidth = 5,)
+    def go(event) :
+        can.create_oval (40,40,60,60,width = 5)
+
+    fen.bind('<Button-1>', go)
+
+Pour comprendre ce système de "bind", je me suis aidé du cours et de cette vidéo tutorielle qui explique assez simplement : https://www.youtube.com/watch?v=Jb5Df2ul41M
+
+Maintenant, au lieu que la graine soit plus large, j'aimerais qu'elle se déplace. Pour ça j'ai utilisé la foncton qui permet de changer les cordonnées de la graine can.coords():
+
+    def sélectionner(event) :
+        n = can.find_closest(50,50)
+        can.coords(n,140,40,160,60)
+        #can.create_oval (40,40,60,60,width = 5)
+    fen.bind('<Button-1>', sélectionner)
+
+Maintenant, j'aimerais que la graine change de coordonnées à chaque fois que je clique. Pour ça, j'ai changé la définition de l'event et ai remplacé les nombres par des variables : 
+
+    x = 50
+    y = 50
+    cx = 140
+    def sélectionner(event) :
+        global x,y,cx
+        n = can.find_closest(x,y)
+        can.coords(n,cx,40,cx + 20,60)
+        x = x + 100
+        cx = cx + 100
+    fen.bind('<Button-1>', sélectionner) 
+
+La, je ne comprenais pas pourquoi cela ne marchait pas, sans le terme global alors j'a demandé à ma maman qui est spécialisée dans ce domaine et elle m'a effectivement expliqué le principe de ce terme.
