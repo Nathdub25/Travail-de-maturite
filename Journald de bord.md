@@ -260,4 +260,39 @@ Maintenant, j'aimerais que la graine change de coordonnées à chaque fois que j
         cx = cx + 100
     fen.bind('<Button-1>', sélectionner) 
 
-La, je ne comprenais pas pourquoi cela ne marchait pas, sans le terme global alors j'a demandé à ma maman qui est spécialisée dans ce domaine et elle m'a effectivement expliqué le principe de ce terme.
+La, je ne comprenais pas pourquoi cela ne marchait pas, sans le terme global alors j'a demandé à ma maman qui est spécialisée dans ce domaine et elle m'a effectivement expliqué le principe de ce terme. Maintenant, il faut que la graine se déplace dans le sens des aguilles d'une montre au lieu de sortir du cadre :
+
+    x = 50
+    y = 50
+    cx = 140
+    cy = 40      
+
+    def sélectionner(event) :
+        global x,y,cx,cy,dx,dy
+        if x == 750 and y != 150 :
+            b = can.find_closest(750,50)
+            can.coords(b,740,140,760,160)
+            y = 150
+            x = 750
+            cx = 640
+            cy = 140
+        elif x == 50 and y == 150 :
+            n = can.find_closest(x,y)
+            can.coords(n,40,40,60,60)
+            y = 50
+            x = 50
+            cx = 140
+            cy = 40
+        elif y == 150 :
+            n = can.find_closest(x,y)
+            can.coords(n,cx,cy,cx + 20,cy + 20)
+            x = x - 100
+            cx = cx - 100
+        else :
+            n = can.find_closest(x,y)
+            can.coords(n,cx,cy,cx + 20,cy + 20)
+            x = x + 100
+            cx = cx + 100
+    fen.bind('<Button-1>', sélectionner)
+
+J'ai utilisé les if et elif où quand la graine est en haut à droite, elle descend(y + 100), quand la graine est en bas à droite, elle va à gauche (x-100), quand la graine est en bas à gauche, elle monte (y - 100) et ensuite qu'elle se dirige vers la droite lorsqu'elle se trouve en haut à gauche. Maintenant, ajoutons une deuxième graine !
