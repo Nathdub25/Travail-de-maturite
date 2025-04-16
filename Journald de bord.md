@@ -267,7 +267,7 @@ La, je ne comprenais pas pourquoi cela ne marchait pas, sans le terme global alo
     cx = 140
     cy = 40      
 
-    def sélectionner(event) :
+    def graineun(event) :
         global x,y,cx,cy,dx,dy
         if x == 750 and y != 150 :
             b = can.find_closest(750,50)
@@ -293,6 +293,41 @@ La, je ne comprenais pas pourquoi cela ne marchait pas, sans le terme global alo
             can.coords(n,cx,cy,cx + 20,cy + 20)
             x = x + 100
             cx = cx + 100
-    fen.bind('<Button-1>', sélectionner)
+    fen.bind('<Button-1>', graine1)
 
-J'ai utilisé les if et elif où quand la graine est en haut à droite, elle descend(y + 100), quand la graine est en bas à droite, elle va à gauche (x-100), quand la graine est en bas à gauche, elle monte (y - 100) et ensuite qu'elle se dirige vers la droite lorsqu'elle se trouve en haut à gauche. Maintenant, ajoutons une deuxième graine !
+J'ai utilisé les if et elif où quand la graine est en haut à droite, elle descend(y + 100), quand la graine est en bas à droite, elle va à gauche (x-100), quand la graine est en bas à gauche, elle monte (y - 100) et ensuite qu'elle se dirige vers la droite lorsqu'elle se trouve en haut à gauche. Maintenant, ajoutons une deuxième graine :
+
+    can.create_oval (40,240,60,260, activewidth = 5)
+    X = 50
+    Y = 250
+    CX = 140
+    CY = 240
+    def grainedeux(event) :
+        global X,Y,CX,CY
+        if X == 750 and Y == 350 :
+            b = can.find_closest(X,Y)
+            can.coords(b,740,240,760,260)
+            Y = 250
+            X = 750
+            CX = 640
+            CY = 240
+        elif Y == 350 :
+            n = can.find_closest(X,Y)
+            can.coords(n,CX,CY,CX + 20,CY + 20)
+            X = X + 100
+            CX = CX + 100
+        elif X == 50 and Y == 250 :
+            n = can.find_closest(X,Y)
+            can.coords(n,40,340,60,360)
+            Y = 350
+            CX = 140
+            CY = 340
+            X = 50
+        else :
+            n = can.find_closest(X,Y)
+            can.coords(n,CX,CY,CX + 20,CY + 20)
+            X = X - 100
+            CX = CX - 100
+    fen.bind('<Button-3>', grainedeux)
+
+Voila, donc à présent lorsque je fais un clic gauche, c'est la graine 1 qui avance tandis que si je fais un clic droit, c'est la graine 2. J'ai juste repris le même code, en changeant les cordonnés du y et mis d'autres variables (en majuscule)
