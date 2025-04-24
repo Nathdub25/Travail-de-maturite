@@ -331,3 +331,23 @@ J'ai utilisé les if et elif où quand la graine est en haut à droite, elle des
     fen.bind('<Button-3>', grainedeux)
 
 Voila, donc à présent lorsque je fais un clic gauche, c'est la graine 1 qui avance tandis que si je fais un clic droit, c'est la graine 2. J'ai juste repris le même code, en changeant les cordonnés du y et mis d'autres variables (en majuscule)
+
+## 24.04.25
+
+Aujourd'hui, j'ai vu mon mentor et il m'a permis de comprendre comment continuer ce que j'avais deja codé. Par exemple, la technique des lignes qui est bien utiles pour définir les trous remplis de graines.
+
+C'est ainsi que je me suis décidé à faire un tableau pour l'instant de la première ligne. Alors je crée 1 graine par trou, dans les 8 trous de la première ligne :
+
+    for i in range(140, 840, + 100):
+        can.create_oval(i, 40, i + 20, 60)
+
+Maintenant, voici mon tableau correspondant à cette ligne :
+
+    ligne1 = [1,1,1,1,1,1,1,1]
+
+Pour l'instant, j'aimerais éviter de placer plus de 1 graine par trou, alors je me suis dit qu'il vaudrait mieux remplacer la graine par le nombre de graines qu'il y a dans le trou, donc "1":
+
+    for i in range(40, 840, + 100):
+        can.create_text(i, 40, text = "1")
+    
+Voila, à présent il faudrait que quand je clique sur un "1", il ajoute + 1 au trou suivant. 
