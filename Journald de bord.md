@@ -350,4 +350,16 @@ Pour l'instant, j'aimerais éviter de placer plus de 1 graine par trou, alors je
     for i in range(40, 840, + 100):
         can.create_text(i, 40, text = "1")
     
-Voila, à présent il faudrait que quand je clique sur un "1", il ajoute + 1 au trou suivant. 
+Voila, à présent il faudrait que quand je clique sur un "1", il ajoute + 1 au trou suivant. Pour ça, j'ai utilisé un tableau pour la première ligne, où chaque trou correspond à une case et le nombre écrit correspond à une graine. Lorsque je clique sur une case, la valeur du tableau correspondante fait + 1 :
+
+    for i in range(40, 840, + 100):
+    un = can.create_text(i, 40, text = "1")
+    L1 = [1,1,1,1,1,1,1,1]
+
+    def adgr(event):
+        clic_x = event.x
+        clic_y = event.y 
+        num_case = clic_x // 100
+        L1[num_case] = L1[num_case] + 1
+    
+    fen.bind('<Button-1>', adgr)
