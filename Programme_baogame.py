@@ -26,7 +26,7 @@ while z < 420:
     cx = 20
     cy = 20
     
-can.create_oval (40,40,60,60, activewidth = 5)
+#can.create_oval (40,40,60,60, activewidth = 5)
 
 x = 50
 y = 50
@@ -94,20 +94,23 @@ def grainedeux(event) :
         CX = CX - 100
     
 fen.bind('<Button-3>', grainedeux)
-fen.bind('<Button-1>', graineun,grainedeux)
+#fen.bind('<Button-1>', graineun)
+for i in range(40, 840, + 100):
+    un = can.create_text(i, 40, text = "1")
+L1 = [1,1,1,1,1,1,1,1]
 
-###class graine :
-    #def __init__(self, x1, y1, x2, y2, activewidth):
-        #self.x1 = x1
-        #self.y1 = y1
-       # self.x2 = x2
-        #self.y2 = y2
-        #self.activewidth = activewidth
-    #def dessiner(self,can) :
-        #can.create_oval(self.x1, self.y1, self.x2, self.y2, activewidth = self.activewidth)
-#graine3 = graine(40,40,60,60,5)
-#graine3.dessiner(can)
-#if graine3.activewidth == 5
+def adgr(event):
+    clic_x = event.x
+    clic_y = event.y 
+    num_case = clic_x // 100
+    L1[num_case] = [num_case] + 1
+    
+fen.bind('<Button-1>', adgr)
+    
+    
+    
+
+
 
 
 
