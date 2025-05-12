@@ -352,14 +352,25 @@ Pour l'instant, j'aimerais éviter de placer plus de 1 graine par trou, alors je
     
 Voila, à présent il faudrait que quand je clique sur un "1", il ajoute + 1 au trou suivant. Pour ça, j'ai utilisé un tableau pour la première ligne, où chaque trou correspond à une case et le nombre écrit correspond à une graine. Lorsque je clique sur une case, la valeur du tableau correspondante fait + 1 :
 
-    for i in range(40, 840, + 100):
-    un = can.create_text(i, 40, text = "1")
     L1 = [1,1,1,1,1,1,1,1]
+    tableau = []
+
+
+    #fen.bind('<Button-1>', graineun)
+    for i in range(len(L1)):
+        un = can.create_text(i*100 + 40, 40, text = str(L1[i]))
+        tableau.append(un)
 
     def adgr(event):
+        global tableau
         clic_x = event.x
         clic_y = event.y 
         num_case = clic_x // 100
         L1[num_case] = L1[num_case] + 1
+        can.itemconfig(tableau[num_case],text = str(L1  [num_case]))
     
     fen.bind('<Button-1>', adgr)
+
+Ce que je fais est créer un tableau L1, qui contient les valeurs de base : "1". Ensuite je crée un tableau vide correspondant à la première ligne du plateau : tableau. Ensuite, grâce à la fonction "len", j'insère le texte qui est stocké dans L1, donc "1" pour chaque trou, déterminés par la longueur du tableau L1, donc 8. Cet "ajout" (can.create_texte) utilise la longueur du tableau L1 comme cordonnées, multipliées par 100 et affiche la valeur du même tableau.
+
+Après je définis l'évènement "adgr" que lie avec le bouton gauche. L'évènement stock les cordonnées de l'objet le plus proche (grâce à event.x/y) du clic de souris en tant que "clic_x ou clic_y". Je définis ensuite la variable "num_case" grâce à la variable "clic_x" que je divise par 100, étant donné que ce sont des cordonnées. J'ajoute + 1 à la variable num_case, car c'est ce que je voulais à la base puis, grâce à la fonction "itemconfig", j'insère la variable num_case alors augmenté de 1 directement à l'intérieur de mon tableau vide "tableau" et je remplace le texte de base qui était affiché sur le trou correspondant ("1") par la valeur augmenté.
