@@ -107,9 +107,20 @@ def adgr(event):
     global tableau
     clic_x = event.x
     clic_y = event.y 
-    num_case = clic_x // 100
-    L1[num_case] = L1[num_case] + 1
-    can.itemconfig(tableau[num_case],text = str(L1[num_case]))
+    
+    num_case_deb = clic_x // 100 
+    num_case_fin = clic_x // 100 + 1
+    
+    
+    L1[num_case_fin] = L1[num_case_deb] + L1[num_case_fin]
+    L1[num_case_deb] = L1[num_case_deb] - L1[num_case_deb]
+    can.itemconfig(tableau[num_case_fin],text = str(L1[num_case_fin]))
+    can.itemconfig(tableau[num_case_deb],text = str(L1[num_case_deb]))
+
+    
+    
+    
+    
     
 fen.bind('<Button-1>', adgr)
     
