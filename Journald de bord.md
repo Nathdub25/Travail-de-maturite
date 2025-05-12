@@ -374,3 +374,20 @@ Voila, à présent il faudrait que quand je clique sur un "1", il ajoute + 1 au 
 Ce que je fais est créer un tableau L1, qui contient les valeurs de base : "1". Ensuite je crée un tableau vide correspondant à la première ligne du plateau : tableau. Ensuite, grâce à la fonction "len", j'insère le texte qui est stocké dans L1, donc "1" pour chaque trou, déterminés par la longueur du tableau L1, donc 8. Cet "ajout" (can.create_texte) utilise la longueur du tableau L1 comme cordonnées, multipliées par 100 et affiche la valeur du même tableau.
 
 Après je définis l'évènement "adgr" que lie avec le bouton gauche. L'évènement stock les cordonnées de l'objet le plus proche (grâce à event.x/y) du clic de souris en tant que "clic_x ou clic_y". Je définis ensuite la variable "num_case" grâce à la variable "clic_x" que je divise par 100, étant donné que ce sont des cordonnées. J'ajoute + 1 à la variable num_case, car c'est ce que je voulais à la base puis, grâce à la fonction "itemconfig", j'insère la variable num_case alors augmenté de 1 directement à l'intérieur de mon tableau vide "tableau" et je remplace le texte de base qui était affiché sur le trou correspondant ("1") par la valeur augmenté.
+
+Maintenant, j'aimerais faire en sorte que ce soit la case d'après qui fass + 1 et que la case de départ descende à 0. Pour ça, j'ai just ajouté + 1 après la division par 100 des cordonnées, pour qu'on modifie bien la case suivante :
+
+    num_case = clic_x // 100 + 1
+
+J'ai aussi ajouté cette ligne, qui permet de remmetre à 0 la case de "départ" :
+
+    can.itemconfig(tableau[num_case - 1], text = "0")
+
+Ce que j'aimerais à présent, c'est ajouter la valeur de la case au lieu de + 1, ce qui correspondrait plus aux règles du jeu. Pour ça, j'ai ajouté 2 variables, une qui correspond à la case de départ (num_case_deb) et une qui correspond à celle d'après (num_case_fin). J'ai ajouté 2 lignes en plus, celle qui réduit la valeur de la case de début à 0 et une qui remplace la valeur visuellement :
+
+    num_case_deb = clic_x // 100 
+    num_case_fin = clic_x // 100 + 1
+    L1[num_case_fin] = L1[num_case_deb] + L1[num_case_fin]
+    L1[num_case_deb] = L1[num_case_deb] - L1[num_case_deb]
+    can.itemconfig(tableau[num_case_fin],text = str(L1[num_case_fin]))
+    can.itemconfig(tableau[num_case_deb],text = str(L1[num_case_deb]))
