@@ -94,16 +94,22 @@ def grainedeux(event) :
         CX = CX - 100
     
 fen.bind('<Button-3>', grainedeux)
-#fen.bind('<Button-1>', graineun)
-for i in range(40, 840, + 100):
-    un = can.create_text(i, 40, text = "1")
 L1 = [1,1,1,1,1,1,1,1]
+tableau = []
+
+
+#fen.bind('<Button-1>', graineun)
+for i in range(len(L1)):
+    un = can.create_text(i*100 + 40, 40, text = str(L1[i]))
+    tableau.append(un)
 
 def adgr(event):
+    global tableau
     clic_x = event.x
     clic_y = event.y 
     num_case = clic_x // 100
-    L1[num_case] = [num_case] + 1
+    L1[num_case] = L1[num_case] + 1
+    can.itemconfig(tableau[num_case],text = str(L1[num_case]))
     
 fen.bind('<Button-1>', adgr)
     
