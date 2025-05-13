@@ -391,3 +391,22 @@ Ce que j'aimerais à présent, c'est ajouter la valeur de la case au lieu de + 1
     L1[num_case_deb] = L1[num_case_deb] - L1[num_case_deb]
     can.itemconfig(tableau[num_case_fin],text = str(L1[num_case_fin]))
     can.itemconfig(tableau[num_case_deb],text = str(L1[num_case_deb]))
+
+Maintenant, il faudrait ajouter la deuxième ligne du tableau, pour prendre en compte la ligne du bas. Pour ça, j'ai utilisé une matrice, qui met des "1" dans tous les trous de la première et la deuxième ligne :
+
+    
+    j1 = [[1]*8 for i in range(0,2)]
+    tableau = [] #ici j1 pour "joueur 1"
+Donc il y aurait 8* le chiffre "1" pour les 2 premières lignes. Ensuite, pour afficher la matrice aux trous correspondants, j'ai décidé, avec l'aide de mon mentor, d'utilisé 2 boucles "for" l'une à l'intérieur de l'autre :
+
+    for j in range (2):
+        for i in range (len(j1[0])):
+            un = can.create_text(i*100 + 40,j*100 + 40, text = str(j1[j][i]))
+            tableau.append(un)
+
+La première boucle dit "tous les j de 0 à 2", qui correspond aux 2 premières lignes du premier joueur. Ensuite, pour chaque ligne de la boucle "j", une autre boucle for est utilisée, qui dirait "pour tous les i de la longueur de la première ligne (j1[0], ici = 8)", et un texte est écrit, appelé "un", qui se répèterait tous les "i*100 + 40" pour les x (donc les colonnes) et tous les j * 100 + 40" pour les y (donc les lignes), où le texte est la valeur correpondante à j1[i][j], donc 1 comme on l'a défini dans la matrice plus tôt.
+
+Donc si je veux aussi avoir le joueur n°2, je n'ai qu'à remplacer la taille de la matrice et jusqu'à quelle valeur la variable "j" irait par 4 au lieu de 2:
+
+Mainenant, il faut tout remplacer et faire en sorte que cela fonctionne sur plusieurs lignes, en utilisant des conditions complexes un peu comme mon code au début, avec les graines.
+
