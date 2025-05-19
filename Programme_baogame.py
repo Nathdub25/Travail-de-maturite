@@ -26,96 +26,32 @@ while z < 420:
     cx = 20
     cy = 20
     
-#can.create_oval (40,40,60,60, activewidth = 5)
 
-x = 50
-y = 50
-cx = 40
-cy = 140    
-
-def graineun(event) :
-    global x,y,cx,cy
-    if x == 750 and y == 150 :
-        b = can.find_closest(x,y)
-        can.coords(b,740,40,760,60)
-        y = 50
-        x = 750
-        cx = 640
-        cy = 40
-    elif y == 150 :
-        n = can.find_closest(x,y)
-        can.coords(n,cx,cy,cx + 20,cy + 20)
-        x = x + 100
-        cx = cx + 100
-    elif x == 50 and y == 50 :
-        n = can.find_closest(x,y)
-        can.coords(n,40,140,60,160)
-        y = 150
-        cx = 140
-        cy = 140
-    else :
-        n = can.find_closest(x,y)
-        can.coords(n,cx,cy,cx + 20,cy + 20)
-        x = x - 100
-        cx = cx - 100
+jeu = [[1]*8 for i in range(0,4)]
+print (jeu)
+tableau = [[]*8 for i in range(0,4)]
+#print (tableau[0][0])
 
 
-
-graine2 = can.create_oval (40,240,60,260, activewidth = 5)
-X = 50
-Y = 250
-CX = 140
-CY = 240
-def grainedeux(event) :
-    global X,Y,CX,CY
-    if X == 750 and Y == 350 :
-        b = can.find_closest(X,Y)
-        can.coords(b,740,240,760,260)
-        Y = 250
-        X = 750
-        CX = 640
-        CY = 240
-    elif Y == 350 :
-        n = can.find_closest(X,Y)
-        can.coords(n,CX,CY,CX + 20,CY + 20)
-        X = X + 100
-        CX = CX + 100
-    elif X == 50 and Y == 250 :
-        n = can.find_closest(X,Y)
-        can.coords(n,40,340,60,360)
-        Y = 350
-        CX = 140
-        CY = 340
-        X = 50
-    else :
-        n = can.find_closest(X,Y)
-        can.coords(n,CX,CY,CX + 20,CY + 20)
-        X = X - 100
-        CX = CX - 100
-    
-fen.bind('<Button-3>', grainedeux)
-L1 = [1,1,1,1,1,1,1,1]
-tableau = []
-
-
-#fen.bind('<Button-1>', graineun)
-for i in range(len(L1)):
-    un = can.create_text(i*100 + 40, 40, text = str(L1[i]))
-    tableau.append(un)
+for j in range (4):
+    for i in range (len(jeu[0])):
+        valcer = can.create_text(i*100 + 40,j*100 + 40, text = str(jeu[j][i]))
+        print (j, i)
+        tableau[j][i].append(valcer)
+        print (tableau[j][i])
 
 def adgr(event):
     global tableau
     clic_x = event.x
     clic_y = event.y 
     
-    num_case_deb = clic_x // 100 
-    num_case_fin = clic_x // 100 + 1
-    
-    
-    L1[num_case_fin] = L1[num_case_deb] + L1[num_case_fin]
-    L1[num_case_deb] = L1[num_case_deb] - L1[num_case_deb]
-    can.itemconfig(tableau[num_case_fin],text = str(L1[num_case_fin]))
-    can.itemconfig(tableau[num_case_deb],text = str(L1[num_case_deb]))
+    li = clic_x // 100 
+    co = clic_y // 100 
+        
+    jeu[li][co] = 0
+    jeu[li][co+1] = jeu[li][co+1] + 1
+    can.itemconfig(tableau[li][co],text = str(jeu[li][co]))
+    can.itemconfig(tableau[li][co + 1],text = str(jeu[li][co + 1]))
 
     
     
