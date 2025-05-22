@@ -406,7 +406,104 @@ Donc il y aurait 8* le chiffre "1" pour les 2 premières lignes. Ensuite, pour a
 
 La première boucle dit "tous les j de 0 à 2", qui correspond aux 2 premières lignes du premier joueur. Ensuite, pour chaque ligne de la boucle "j", une autre boucle for est utilisée, qui dirait "pour tous les i de la longueur de la première ligne (j1[0], ici = 8)", et un texte est écrit, appelé "un", qui se répèterait tous les "i*100 + 40" pour les x (donc les colonnes) et tous les j * 100 + 40" pour les y (donc les lignes), où le texte est la valeur correpondante à j1[i][j], donc 1 comme on l'a défini dans la matrice plus tôt.
 
-Donc si je veux aussi avoir le joueur n°2, je n'ai qu'à remplacer la taille de la matrice et jusqu'à quelle valeur la variable "j" irait par 4 au lieu de 2:
+Donc si je veux aussi avoir le joueur n°2, je n'ai qu'à remplacer la taille de la matrice et jusqu'à quelle valeur la variable "j" irait par 4 au lieu de 2.
 
-Mainenant, il faut tout remplacer et faire en sorte que cela fonctionne sur plusieurs lignes, en utilisant des conditions complexes un peu comme mon code au début, avec les graines.
+Maintenant, il faudrait lier la matrice avec le plateau de jeu. Pour ça, je crée une matrice vide :
 
+    tableau = [[None]*8 for i in range(0,4)]
+
+Ensuite, j'écris un texte pour chaque trou (ici : "1") que je relie ensuite à la matrice vide, pour que chaque texte corresponde à une case de la matrice :
+
+    for j in range (4):
+        for i in range (len(jeu[0])):
+            valcer = can.create_text(i*100 + 40,j*100 + 40, text = str(jeu[j][i])) #jeu est le nouveau nom pour "j1"
+            print (j, i)
+            tableau[j][i] = valcer
+            print (tableau[j][i])
+
+--> Les cordonnées du tableau [j][i] correspondent à valcer, qui est le texte créé des cordonnées correspondantes du tableau "jeu", une matrice 4x8 remplie que de "1".
+
+Ensuite, j'aimerais faire en sorte donc qu'un clic permette de déplacer toutes les graines d'un trou dans le trou suivant. Pour ça j'ai défini un event :
+
+    def adgr(event):
+        global tableau
+        clic_x = event.x
+        clic_y = event.y 
+    
+        co = clic_x // 100 
+        li = clic_y // 100 
+        
+        jeu[li][co] = 0
+        jeu[li][co+1] = jeu[li][co+1] + 1
+        can.itemconfig(tableau[li][co],text = str(jeu[li][co]))
+        can.itemconfig(tableau[li][co + 1],text = str(jeu[li][co + 1]))
+
+Donc co correspond aux cordonnées x du clic divisées par 100 : c'est-à-dire le numéro de la colonne, et li aux cordonnées y du clic divisées par 100 : donc le numéro de la ligne. Ainsi donc la commande jeu[li][co]=0 remet la valeur de la case correspondante de la matrice à 0! La case d'après (jeu[li][co+1]) vaut plus 1, étant donné qu'on a additionné la valeur de la case d'avant. Visuellement, il faudrait encore changer le texte par la valeur de la case, d'ou la commande itemconfig.
+
+Mais au lieu de rajouter + 1 à chaque fois (même si cela marche pour le premier clic) il faudrait rajouter la valeur de la case correspondante, qui n'est pas toujours égale à 1, du coup :
+
+    def adgr(event):
+        global tableau
+        clic_x = event.x
+        clic_y = event.y 
+    
+        co = clic_x // 100 
+        li = clic_y // 100 
+        jeu[li][co+1] = jeu[li][co+1] + jeu[li][co]    
+        jeu[li][co] = jeu[li][co]-jeu[li][co]
+    
+        can.itemconfig(tableau[li][co],text = str(jeu[li][co]))
+        can.itemconfig(tableau[li][co + 1],text = str(jeu[li][co + 1]))
+
+Donc j'ai remplacé + 1 par la valeur de la case du clic et j'ai mis cette commande avant l'autre, avant qu'on ne baisse la valeur à 0.
+Voila, maintenant il faudrait que cela fonctionne aux bords, que la valeur des graines descendent ou montent.
+
+    def adgr(event):
+    global tableau
+    clic_x = event.x
+    clic_y = event.y 
+    
+    co = clic_x // 100 
+    li = clic_y // 100 
+    if clic_y > 240 and clic_y < 340 and clic_x > 140:
+        jeu[li][co-1] = jeu[li][co-1] + jeu[li][co]    
+        jeu[li][co] = jeu[li][co]-jeu[li][co]
+        can.itemconfig(tableau[li][co],text = str(jeu[li][co]))
+        can.itemconfig(tableau[li][co - 1],text = str(jeu[li][co - 1]))
+    if clic_x > 0 and clic_x < 140 and clic_y > 240 and clic_y < 340:
+        jeu[li+1][co] = jeu[li+1][co] + jeu[li][co]
+        jeu[li][co] = jeu[li][co] - jeu[li][co]
+        can.itemconfig(tableau[li][co],text = str(jeu[li][co]))
+        can.itemconfig(tableau[li+1][co],text = str(jeu[li+1][co]))
+    if clic_y > 340 and clic_y < 440 and clic_x < 740:
+        jeu[li][co+1] = jeu[li][co+1] + jeu[li][co]    
+        jeu[li][co] = jeu[li][co]-jeu[li][co]
+        can.itemconfig(tableau[li][co],text = str(jeu[li][co]))
+        can.itemconfig(tableau[li][co + 1],text = str(jeu[li][co + 1]))
+    if clic_x > 740 and clic_x < 840 and clic_y > 340 and clic_y < 440:
+        jeu[li-1][co] = jeu[li-1][co] + jeu[li][co]
+        jeu[li][co] = jeu[li][co] - jeu[li][co]
+        can.itemconfig(tableau[li][co],text = str(jeu[li][co]))
+        can.itemconfig(tableau[li-1][co],text = str(jeu[li-1][co]))
+    if clic_y > 140 and clic_y < 240 and clic_x < 740:
+        jeu[li][co+1] = jeu[li][co+1] + jeu[li][co]    
+        jeu[li][co] = jeu[li][co]-jeu[li][co]
+        can.itemconfig(tableau[li][co],text = str(jeu[li][co]))
+        can.itemconfig(tableau[li][co + 1],text = str(jeu[li][co + 1]))
+    if clic_x > 740 and clic_x < 840 and clic_y > 140 and clic_y < 240:
+        jeu[li-1][co] = jeu[li-1][co] + jeu[li][co]
+        jeu[li][co] = jeu[li][co] - jeu[li][co]
+        can.itemconfig(tableau[li][co],text = str(jeu[li][co]))
+        can.itemconfig(tableau[li-1][co],text = str(jeu[li-1][co]))
+    if clic_y > 0 and clic_y < 140 and clic_x > 140:
+        jeu[li][co-1] = jeu[li][co-1] + jeu[li][co]    
+        jeu[li][co] = jeu[li][co]-jeu[li][co]
+        can.itemconfig(tableau[li][co],text = str(jeu[li][co]))
+        can.itemconfig(tableau[li][co - 1],text = str(jeu[li][co - 1]))
+    if clic_x > 0 and clic_x < 140 and clic_y > 0 and clic_y < 140:
+        jeu[li+1][co] = jeu[li+1][co] + jeu[li][co]
+        jeu[li][co] = jeu[li][co] - jeu[li][co]
+        can.itemconfig(tableau[li][co],text = str(jeu[li][co]))
+        can.itemconfig(tableau[li+1][co],text = str(jeu[li+1][co]))
+
+J'ai mis une condition pour chaque coin (8, 4 par joueur) ou pouvaient se trouver les cordonnées, en augmentant les x (co+1) ou les y (li+1), ou en les descendant (co-1/li-1).
