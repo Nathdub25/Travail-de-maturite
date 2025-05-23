@@ -507,3 +507,14 @@ Voila, maintenant il faudrait que cela fonctionne aux bords, que la valeur des g
         can.itemconfig(tableau[li+1][co],text = str(jeu[li+1][co]))
 
 J'ai mis une condition pour chaque coin (8, 4 par joueur) ou pouvaient se trouver les cordonnées, en augmentant les x (co+1) ou les y (li+1), ou en les descendant (co-1/li-1).
+
+Maintenant, j'aimerais faire en sorte que les graines d'un trou soient distribuées 1 par 1 dans les trous suivants.
+
+    if clic_y > 240 and clic_y < 340 and clic_x > 140:
+        for k in range(1, jeu[li][co]+1):
+            jeu[li][co-k] = 1  + jeu[li][co-k] 
+            jeu[li][co] = jeu[li][co]-jeu[li][co]
+            can.itemconfig(tableau[li][co],text = str(jeu[li][co]))
+            can.itemconfig(tableau[li][co - k],text = str(jeu[li][co - k]))
+
+J'ai utilisé une boucle for, donc pour tous les k allant de 1 à la valeur du trou correspondant du clic + 1, je rajoute 1 à la valeur des k trous suivants. Mais pour l'instant, cela marche que si les graines rentrent avant le bord du tableau. Il faut donc que les graines se distribuent aussi sur les lignes suivantes, dans le sens du jeu : 
