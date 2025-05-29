@@ -27,7 +27,7 @@ while z < 420:
     cy = 20
     
 
-jeu = [[1]*8 for i in range(0,4)]
+jeu = [[2]*8 for i in range(0,4)]
 print (jeu)
 tableau = [[None]*8 for i in range(0,4)]
 #print (tableau[0][0])
@@ -47,47 +47,129 @@ def adgr(event):
     
     co = clic_x // 100 
     li = clic_y // 100 
-    if clic_y > 240 and clic_y < 340 and clic_x > 140:
-        jeu[li][co-1] = jeu[li][co-1] + jeu[li][co]    
-        jeu[li][co] = jeu[li][co]-jeu[li][co]
-        can.itemconfig(tableau[li][co],text = str(jeu[li][co]))
-        can.itemconfig(tableau[li][co - 1],text = str(jeu[li][co - 1]))
-    if clic_x > 0 and clic_x < 140 and clic_y > 240 and clic_y < 340:
-        jeu[li+1][co] = jeu[li+1][co] + jeu[li][co]
-        jeu[li][co] = jeu[li][co] - jeu[li][co]
-        can.itemconfig(tableau[li][co],text = str(jeu[li][co]))
-        can.itemconfig(tableau[li+1][co],text = str(jeu[li+1][co]))
-    if clic_y > 340 and clic_y < 440 and clic_x < 740:
-        jeu[li][co+1] = jeu[li][co+1] + jeu[li][co]    
-        jeu[li][co] = jeu[li][co]-jeu[li][co]
-        can.itemconfig(tableau[li][co],text = str(jeu[li][co]))
-        can.itemconfig(tableau[li][co + 1],text = str(jeu[li][co + 1]))
-    if clic_x > 740 and clic_x < 840 and clic_y > 340 and clic_y < 440:
-        jeu[li-1][co] = jeu[li-1][co] + jeu[li][co]
-        jeu[li][co] = jeu[li][co] - jeu[li][co]
-        can.itemconfig(tableau[li][co],text = str(jeu[li][co]))
-        can.itemconfig(tableau[li-1][co],text = str(jeu[li-1][co]))
-    if clic_y > 140 and clic_y < 240 and clic_x < 740:
-        jeu[li][co+1] = jeu[li][co+1] + jeu[li][co]    
-        jeu[li][co] = jeu[li][co]-jeu[li][co]
-        can.itemconfig(tableau[li][co],text = str(jeu[li][co]))
-        can.itemconfig(tableau[li][co + 1],text = str(jeu[li][co + 1]))
-    if clic_x > 740 and clic_x < 840 and clic_y > 140 and clic_y < 240:
-        jeu[li-1][co] = jeu[li-1][co] + jeu[li][co]
-        jeu[li][co] = jeu[li][co] - jeu[li][co]
-        can.itemconfig(tableau[li][co],text = str(jeu[li][co]))
-        can.itemconfig(tableau[li-1][co],text = str(jeu[li-1][co]))
-    if clic_y > 0 and clic_y < 140 and clic_x > 140:
-        jeu[li][co-1] = jeu[li][co-1] + jeu[li][co]    
-        jeu[li][co] = jeu[li][co]-jeu[li][co]
-        can.itemconfig(tableau[li][co],text = str(jeu[li][co]))
-        can.itemconfig(tableau[li][co - 1],text = str(jeu[li][co - 1]))
-    if clic_x > 0 and clic_x < 140 and clic_y > 0 and clic_y < 140:
-        jeu[li+1][co] = jeu[li+1][co] + jeu[li][co]
-        jeu[li][co] = jeu[li][co] - jeu[li][co]
-        can.itemconfig(tableau[li][co],text = str(jeu[li][co]))
-        can.itemconfig(tableau[li+1][co],text = str(jeu[li+1][co]))
 
+    
+    if clic_y > 240 and clic_y < 340:
+    
+        if jeu[li][co] <= co:
+            val = jeu[li][co]
+            for k in range(1, val+1):
+                jeu[li][co-k] = 1  + jeu[li][co-k] 
+                can.itemconfig(tableau[li][co - k],text = str(jeu[li][co - k]))
+                jeu[li][co] = 0
+                can.itemconfig(tableau[li][co],text = str(jeu[li][co]))
+            
+        if jeu[li][co] > co:
+            if co == 0:
+                val = jeu[li][co]
+                for h in range(0, val):
+                    jeu[li+1][h] = jeu[li+1][h] + 1
+                    can.itemconfig(tableau[li+1][h], text=str(jeu[li+1][h]))
+                    jeu[li][co] = 0
+                    can.itemconfig(tableau[li][co],text = str(jeu[li][co]))
+            else:
+                val = jeu[li][co]
+                for g in range(1, co+1):
+                    jeu[li][co-g] = jeu[li][co-g] + 1
+                    can.itemconfig(tableau[li][co - g],text = str(jeu[li][co - g]))
+                for h in range(0, val-co):
+                        
+                    jeu[li+1][h] = jeu[li+1][h] + 1
+                    can.itemconfig(tableau[li+1][h], text = str(jeu[li+1][h]))
+                        
+                jeu[li][co] = 0
+                can.itemconfig(tableau[li][co],text = str(jeu[li][co]))
+                    
+    if clic_y > 340 and clic_y < 440:
+        if jeu[li][co] <= 7-co:
+            val = jeu[li][co]
+            for k in range(1, val+1):
+                jeu[li][co+k] = 1  + jeu[li][co+k] 
+                can.itemconfig(tableau[li][co + k],text = str(jeu[li][co + k]))
+                jeu[li][co] = 0
+                can.itemconfig(tableau[li][co],text = str(jeu[li][co]))
+        if jeu[li][co] > 7-co:
+            val = jeu[li][co]
+            if co == 7:
+                for h in range(0, val):
+                    jeu[li-1][7-h] = jeu[li-1][7-h] + 1
+                    can.itemconfig(tableau[li-1][7-h], text=str(jeu[li-1][7-h]))
+                    jeu[li][co] = 0
+                    can.itemconfig(tableau[li][co],text = str(jeu[li][co]))
+            else:
+                val = jeu[li][co]
+                for g in range(1, 7-co+1):
+                    jeu[li][co+g] = jeu[li][co+g] + 1
+                    can.itemconfig(tableau[li][co + g],text = str(jeu[li][co + g]))
+                for h in range(0, val-(7-co)):
+                    jeu[li-1][7-h] = jeu[li-1][7-h] + 1
+                    can.itemconfig(tableau[li-1][7-h], text = str(jeu[li-1][7-h]))
+                        
+                jeu[li][co] = 0
+                can.itemconfig(tableau[li][co],text = str(jeu[li][co]))
+                    
+    if clic_y > 40 and clic_y < 140:
+        if jeu[li][co] <= co:
+            val = jeu[li][co]
+            for k in range(1, val+1):
+                jeu[li][co-k] = 1  + jeu[li][co-k] 
+                can.itemconfig(tableau[li][co - k],text = str(jeu[li][co - k]))
+                jeu[li][co] = 0
+                can.itemconfig(tableau[li][co],text = str(jeu[li][co]))
+            
+        if jeu[li][co] > co:
+            if co == 0:
+                val = jeu[li][co]
+                for h in range(0, val):
+                    jeu[li+1][h] = jeu[li+1][h] + 1
+                    can.itemconfig(tableau[li+1][h], text=str(jeu[li+1][h]))
+                    jeu[li][co] = 0
+                    can.itemconfig(tableau[li][co],text = str(jeu[li][co]))
+            else:
+                val = jeu[li][co]
+                for g in range(1, co+1):
+                    jeu[li][co-g] = jeu[li][co-g] + 1
+                    can.itemconfig(tableau[li][co - g],text = str(jeu[li][co - g]))
+                for h in range(0, val-co):
+                        
+                    jeu[li+1][h] = jeu[li+1][h] + 1
+                    can.itemconfig(tableau[li+1][h], text = str(jeu[li+1][h]))
+                        
+                jeu[li][co] = 0
+                can.itemconfig(tableau[li][co],text = str(jeu[li][co]))
+                    
+    if clic_y > 140 and clic_y < 240:
+        if jeu[li][co] <= 7-co:
+            val = jeu[li][co]
+            for k in range(1, val+1):
+                jeu[li][co+k] = 1  + jeu[li][co+k] 
+                can.itemconfig(tableau[li][co + k],text = str(jeu[li][co + k]))
+                jeu[li][co] = 0
+                can.itemconfig(tableau[li][co],text = str(jeu[li][co]))
+                
+        if jeu[li][co] > 7-co:
+            if co == 7:
+                val = jeu[li][co]
+                for h in range(0, val):
+                    jeu[li-1][7-h] = jeu[li-1][7-h] + 1
+                    can.itemconfig(tableau[li-1][7-h], text=str(jeu[li-1][7-h]))
+                    jeu[li][co] = 0
+                    can.itemconfig(tableau[li][co],text = str(jeu[li][co]))
+            else:
+                val = jeu[li][co]
+                for g in range(1, 7-co+1):
+                    jeu[li][co+g] = jeu[li][co+g] + 1
+                    can.itemconfig(tableau[li][co + g],text = str(jeu[li][co + g]))
+                for h in range(0, val-(7-co)):
+                        
+                        jeu[li-1][7-h] = jeu[li-1][7-h] + 1
+                        can.itemconfig(tableau[li-1][7-h], text = str(jeu[li-1][7-h]))
+                        
+                jeu[li][co] = 0
+                can.itemconfig(tableau[li][co],text = str(jeu[li][co]))
+                    
+    
+        
 
     
     
