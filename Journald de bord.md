@@ -520,31 +520,43 @@ Maintenant, j'aimerais faire en sorte que les graines d'un trou soient distribu�
 J'ai utilisé une boucle for, donc pour tous les k allant de 1 à la valeur du trou correspondant du clic + 1, je rajoute 1 à la valeur des k trous suivants. Mais pour l'instant, cela marche que si les graines rentrent avant le bord du tableau. Il faut donc que les graines se distribuent aussi sur les lignes suivantes, dans le sens du jeu : 
 
         if clic_y > 240 and clic_y < 340:
+    
         if jeu[li][co] <= co:
-            for k in range(1, jeu[li][co]+1):
+            val = jeu[li][co]
+            for k in range(1, val+1):
                 jeu[li][co-k] = 1  + jeu[li][co-k] 
+                can.itemconfig(tableau[li][co - k],text = str(jeu[li][co - k]))
                 jeu[li][co] = 0
                 can.itemconfig(tableau[li][co],text = str(jeu[li][co]))
-                can.itemconfig(tableau[li][co - k],text = str(jeu[li][co - k]))
+            
         if jeu[li][co] > co:
             if co == 0:
-                for h in range(0, jeu[li][co]):
+                val = jeu[li][co]
+                for h in range(0, val):
                     jeu[li+1][h] = jeu[li+1][h] + 1
                     can.itemconfig(tableau[li+1][h], text=str(jeu[li+1][h]))
                     jeu[li][co] = 0
                     can.itemconfig(tableau[li][co],text = str(jeu[li][co]))
             else:
+                val = jeu[li][co]
                 for g in range(1, co+1):
-                    for h in range(0, jeu[li][co]-co):
-                        jeu[li][co-g] = jeu[li][co-g] + 1
-                        jeu[li][co] = 0
-                        jeu[li+1][h] = jeu[li+1][h] + 1
-                        can.itemconfig(tableau[li+1][h], text = str(jeu[li+1][h]))
-                        can.itemconfig(tableau[li][co],text = str(jeu[li][co]))
-                        can.itemconfig(tableau[li][co - g],text = str(jeu[li][co - g]))
+                    jeu[li][co-g] = jeu[li][co-g] + 1
+                    can.itemconfig(tableau[li][co - g],text = str(jeu[li][co - g]))
+                for h in range(0, val-co):
+                        
+                    jeu[li+1][h] = jeu[li+1][h] + 1
+                    can.itemconfig(tableau[li+1][h], text = str(jeu[li+1][h]))
+                        
+                jeu[li][co] = 0
+                can.itemconfig(tableau[li][co],text = str(jeu[li][co]))
+                    
 
 J'ai mis 2 conditions : si le contenu du trou est plus petit ou égal que le nombre de trous qui restent avant de descendre de ligne (donc <= le numéro de la case-->co) et si le contenu du trou est plus grand que co, auquel cas les graines devront aussi être distribuées sur la ligne du bas. Pour la première condition, j'ai repris le même code qu'avant, rien ne change.
 
 Pour la deuxième condition donc si jeu[li][co] > co, ce que je fais c'est que je distribue les graines du trou sur la ligne d'abord (donc il y a autant de trous que les cordonnées de colonne : co) en utilisant la boucle for g in range et la fonction co-g. Et ensuite je distribue le reste sur la ligne du bas donc pour trouver le reste je fais le contenu du trou (jeu[li][co]) - le nombre de trous sur la ligne de base (co). La j'ai utilisé la boucle for h in range qui rajoute +h à co de jeu[li+1 car c'est la ligne du bas][co qui est égal à 0 car on part de la gauche, donc h]. J'ai aussi rajouté la condition de co==0, car si on soustrait le contenu de jeu[li][0] à 0 ben on obtient un nombre négatif donc ça va modifier le mauvais trou de la ligne en plus, et ce n'est pas ce que je veux. Donc pour cette condition co==0 j'ai utilisé le même code mais sans la ligne de base, donc toutes les graines de ce trou vont directement dans la ligne du bas.
 
 Maintenant que ça c'est fait, il faut aussi le faire pour toutes les lignes donc encore 3 fois (2 pour monter : joueur 1 et joueur 2, et 2 pour descendre : joueur 1 et joueur 2 aussi).
+
+Je ne vais pas écrire le code, mais il est disponible sur GitHub et il marche!
+
+Maintenant, ce qu'il faudrait faire c'est répéter le processus tant que le trou de la dernière graine posée ne soit pas vide.
