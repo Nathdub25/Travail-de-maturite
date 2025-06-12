@@ -560,3 +560,103 @@ Maintenant que ça c'est fait, il faut aussi le faire pour toutes les lignes don
 Je ne vais pas écrire le code, mais il est disponible sur GitHub et il marche!
 
 Maintenant, ce qu'il faudrait faire c'est répéter le processus tant que le trou de la dernière graine posée ne soit pas vide.
+
+Voici mon code pour un joueur :
+
+    while True :
+        
+        dern_li = li
+        dern_co = co
+        if clic_y > 240 and clic_y < 340: #3ème rangée
+            if jeu[li][co] <= co: #si nmbr de graine plus petit que nmbr de trou suivants
+                val = jeu[li][co]
+                for k in range(1, val+1): # + 1 trous suivants
+                
+                    jeu[li][co-k] = 1  + jeu[li][co-k] 
+                    can.itemconfig(tableau[li][co - k],text = str(jeu[li][co - k]))
+                    jeu[li][co] = 0
+                    can.itemconfig(tableau[li][co],text = str(jeu[li][co]))
+                dern_co = co-val
+            
+            else: #si besoin de distribuer dans la rangée du dessous
+                if co == 0: #juste la ligne du dessous
+                    val = jeu[li][co]
+                    for h in range(0, val):
+                        jeu[li+1][h] = jeu[li+1][h] + 1
+                        can.itemconfig(tableau[li+1][h], text=str(jeu[li+1][h]))
+                        jeu[li][co] = 0
+                        can.itemconfig(tableau[li][co],text = str(jeu[li][co]))
+                    dern_li = li + 1
+                    print (co,val)
+                    dern_co = co + val -1
+                    print (dern_co)
+                    
+                
+                elif co > 0:
+                    #les trous suivants + la ligne du dssous
+                    val = jeu[li][co]
+                    for g in range(1, co+1):
+                        jeu[li][co-g] = jeu[li][co-g] + 1
+                        can.itemconfig(tableau[li][co - g],text = str(jeu[li][co - g]))
+                    for h in range(0, val-co):
+                        
+                        jeu[li+1][h] = jeu[li+1][h] + 1
+                        can.itemconfig(tableau[li+1][h], text = str(jeu[li+1][h]))
+                        
+                    jeu[li][co] = 0
+                    can.itemconfig(tableau[li][co],text = str(jeu[li][co]))
+                    dern_li = li + 1
+                    dern_co = val-co-1
+                
+                    
+        
+                    
+        if clic_y > 340 and clic_y < 440: #4ème rangée
+            if jeu[li][co] <= 7-co: #si nmbr de graine plus petit que nmbr de trou --> distribuer que sur rangée
+                val = jeu[li][co]
+                for k in range(1, val+1):
+                    jeu[li][co+k] = 1  + jeu[li][co+k] 
+                    can.itemconfig(tableau[li][co + k],text = str(jeu[li][co + k]))
+                    jeu[li][co] = 0
+                    can.itemconfig(tableau[li][co],text = str(jeu[li][co]))
+                dern_co = co + val
+                print (co, val)
+            else:
+                val = jeu[li][co]
+                if co == 7: #distribuer ligne du dessus
+                    for h in range(0, val):
+                        jeu[li-1][7-h] = jeu[li-1][7-h] + 1
+                        can.itemconfig(tableau[li-1][7-h], text=str(jeu[li-1][7-h]))
+                        jeu[li][co] = 0
+                        can.itemconfig(tableau[li][co],text = str(jeu[li][co]))
+                    dern_li = li - 1
+                    dern_co = 7-val+1
+                    
+                else: #distribuer ligne du dessus + trou qui restent
+                    val = jeu[li][co]
+                    for g in range(1, 7-co+1):
+                        jeu[li][co+g] = jeu[li][co+g] + 1
+                        can.itemconfig(tableau[li][co + g],text = str(jeu[li][co + g]))
+                    for h in range(0, val-(7-co)):
+                        jeu[li-1][7-h] = jeu[li-1][7-h] + 1
+                        can.itemconfig(tableau[li-1][7-h], text = str(jeu[li-1][7-h]))
+                        
+                    jeu[li][co] = 0
+                    can.itemconfig(tableau[li][co],text = str(jeu[li][co]))
+                    dern_li = li - 1
+                    dern_co = 7- (val - (7-co) - 1)
+        if jeu[dern_li][dern_co] == 1:
+            break
+        elif jeu[dern_li][dern_co] > 1:
+            li = dern_li
+            co = dern_co
+            print(jeu)
+            print (li, co)
+        if dern_li == 3:
+            clic_y = 350
+        if dern_li == 2:
+            clic_y = 250
+
+Ce que j'ai fait, c'est que j'ai rajouté le "dern_co et dern_li" Ces variables correspondent aux cordonnées du dernier trou dans lequel la graine rattérit. La boucle while true fait que, tant que le dernier trou donc jeu[dern_li][dern_co] ne contient pas une seule graine, la dernière (voir règles), le processus se répète en boucle avec dern_co qui devient le nouveau co et dern_li qui devient le nouveau li, tout en augmentant ou diminuant de 100 clic_y suivant si li = 2 ou li = 3. 
+
+Maintenant il faudrait rajouter la règle de la "prise" qui dit que si le trou en face de celui que la graine rattérit (que sur rangée du dessus), les graines de l'adversaire disparaissent. Pour ça, j'ai décidé de d'abord programmer le joueur 2. 
