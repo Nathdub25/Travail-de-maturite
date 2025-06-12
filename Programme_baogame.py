@@ -133,7 +133,7 @@ def adgr(event):
                     dern_co = 7- (val - (7-co) - 1)
                     
                     
-        if clic_y > 40 and clic_y < 140:
+        if clic_y > 40 and clic_y < 140: #1ère rangée
             if jeu[li][co] <= co:
                 val = jeu[li][co]
                 for k in range(1, val+1):
@@ -141,6 +141,7 @@ def adgr(event):
                     can.itemconfig(tableau[li][co - k],text = str(jeu[li][co - k]))
                     jeu[li][co] = 0
                     can.itemconfig(tableau[li][co],text = str(jeu[li][co]))
+                dern_co = co-val
             
             if jeu[li][co] > co:
                 if co == 0:
@@ -150,6 +151,10 @@ def adgr(event):
                         can.itemconfig(tableau[li+1][h], text=str(jeu[li+1][h]))
                         jeu[li][co] = 0
                         can.itemconfig(tableau[li][co],text = str(jeu[li][co]))
+                    dern_li = li + 1
+                    print (co,val)
+                    dern_co = co + val -1
+                    print (dern_co)
                 else:
                     val = jeu[li][co]
                     for g in range(1, co+1):
@@ -162,8 +167,11 @@ def adgr(event):
                         
                     jeu[li][co] = 0
                     can.itemconfig(tableau[li][co],text = str(jeu[li][co]))
+                    dern_li = li + 1
+                    dern_co = val-co-1
                     
-        if clic_y > 140 and clic_y < 240:
+                    
+        if clic_y > 140 and clic_y < 240: #2ème rangée
             if jeu[li][co] <= 7-co:
                 val = jeu[li][co]
                 for k in range(1, val+1):
@@ -171,6 +179,7 @@ def adgr(event):
                     can.itemconfig(tableau[li][co + k],text = str(jeu[li][co + k]))
                     jeu[li][co] = 0
                     can.itemconfig(tableau[li][co],text = str(jeu[li][co]))
+                dern_co = co + val
                 
             if jeu[li][co] > 7-co:
                 if co == 7:
@@ -180,6 +189,8 @@ def adgr(event):
                         can.itemconfig(tableau[li-1][7-h], text=str(jeu[li-1][7-h]))
                         jeu[li][co] = 0
                         can.itemconfig(tableau[li][co],text = str(jeu[li][co]))
+                    dern_li = li - 1
+                    dern_co = 7-val+1
                 else:
                     val = jeu[li][co]
                     for g in range(1, 7-co+1):
@@ -192,6 +203,8 @@ def adgr(event):
                         
                     jeu[li][co] = 0
                     can.itemconfig(tableau[li][co],text = str(jeu[li][co]))
+                    dern_li = li - 1
+                    dern_co = 7- (val - (7-co) - 1)
         if jeu[dern_li][dern_co] == 1:
             break
         elif jeu[dern_li][dern_co] > 1:
@@ -203,6 +216,10 @@ def adgr(event):
             clic_y = 350
         if dern_li == 2:
             clic_y = 250
+        if dern_li == 1:
+            clic_y = 150
+        if dern_li == 0:
+            clic_y = 50
     print (jeu)
             
             
