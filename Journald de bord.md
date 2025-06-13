@@ -660,3 +660,50 @@ Voici mon code pour un joueur :
 Ce que j'ai fait, c'est que j'ai rajouté le "dern_co et dern_li" Ces variables correspondent aux cordonnées du dernier trou dans lequel la graine rattérit. La boucle while true fait que, tant que le dernier trou donc jeu[dern_li][dern_co] ne contient pas une seule graine, la dernière (voir règles), le processus se répète en boucle avec dern_co qui devient le nouveau co et dern_li qui devient le nouveau li, tout en augmentant ou diminuant de 100 clic_y suivant si li = 2 ou li = 3. 
 
 Maintenant il faudrait rajouter la règle de la "prise" qui dit que si le trou en face de celui que la graine rattérit (que sur rangée du dessus), les graines de l'adversaire disparaissent. Pour ça, j'ai décidé de d'abord programmer le joueur 2. 
+
+Maintenant que c'est fait, j'ai donc programmer cette règle de prise :
+
+         if jeu[dern_li][dern_co] == 1: #si dernière graine attérit dans une case vide
+            if dern_li == 2: #joueur 1 prend les graines de l'adversaire
+                jeu[dern_li-1][dern_co] = 0
+                can.itemconfig(tableau[dern_li-1][dern_co],text = str(jeu[dern_li-1][dern_co]))
+                
+            elif dern_li == 1: #joueur 2
+                jeu[dern_li+1][dern_co] = 0
+                can.itemconfig(tableau[dern_li+1][dern_co],text = str(jeu[dern_li+1][dern_co]))
+
+Le code consiste à changer la valeur de la case en face de celle dans laquelle la dernière graine rattérit par 0 (le joueur prend les graines). Mais cette règle ne marche que pour la rangée du dessus, donc j'ai écrit 2 cas de figures : quand dern_li = 2 (donc la rangée du dessus du premier joueur)
+et quand dern_li = 1(rangée du dessus du deuxième joueur).
+Donc si la valeur de la dernière case = 1 (derière graine), suivant les cas de figures, la case du dessus (dern_li -1) ou la case du dessous (dern_li +1) vaut 0.
+
+Maintenant, j'aimerais afficher les graines prises directement sur l'écran. Pour ça, j'ai ajouté ces lignes au code:
+
+    can.create_text (150, 450, text = "player 1 : ")
+    can.create_text (550, 450, text = "player 2 : ")
+    graines_j1 = can.create_text(150,470, text = "0")
+    graines_j2 = can.create_text(550,470, text = "0")
+
+Ensuite, j'ai défini le nombre de graines capturées des deux joueurs à 0 :
+
+    nbr_graine_mangees_j1 = 0
+    nbr_graine_mangees_j2 = 0
+    !C'est important de le faire en dehors de l'event, pour éviter de définir la valeur à 0 à chaque fois!
+
+Et pour finir, j'ai ajouté ces lignes dans le code pour les règles de "prise": 
+
+        total = nbr_graine_mangees_j1 + jeu[dern_li-1][dern_co] #la cagnotte totale devient l'addition des graines capturées et des graines venant d'être capturées
+        can.itemconfig(graines_j1, text = str(total))#afficher le total des graines capturés par le joueur 1
+        nbr_graine_mangees_j1 = total
+
+Donc la "cagnotte" est l'addition des graines présentes déjà dans dans la cagnotte de départ (au début = 0) et les graines capturées à ce moment la. A chaque tour donc on remplace le nombre de graines mangées du joueur 1 par la cagnotte totale. (itemconfig). La cagnotte totale devient alors le nouveau nombre de graine mangées, qui viendra s'addtionner au prochain tour avec les graines venant d'être capturées.
+
+Voici le code pour le joueur 2 :
+
+    elif dern_li == 1: #joueur 2
+        total = nbr_graine_mangees_j2 + jeu[dern_li+1][dern_co] #la cagnotte totale devient l'addition des graines capturées et des graines venant d'être capturées
+        can.itemconfig(graines_j2, text = str(total))#afficher le total des graines capturés par le joueur 2
+        nbr_graine_mangees_j2 = total 
+                
+        jeu[dern_li+1][dern_co] = 0
+        can.itemconfig(tableau[dern_li+1][dern_co],text = str(jeu[dern_li+1][dern_co]))
+
