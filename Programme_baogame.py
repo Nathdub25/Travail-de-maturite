@@ -5,9 +5,14 @@ import time
 fen = Tk()
 
 fen.geometry("820x600")
-can = Canvas(fen, width=820, height=420)
+can = Canvas(fen, width=820, height=500)
 can.grid()
 can.create_rectangle (10,10,810,410)
+can.create_text (150, 450, text = "player 1 : ")
+can.create_text (550, 450, text = "player 2 : ")
+graines_j1 = can.create_text(150,470, text = "0")
+graines_j2 = can.create_text(550,470, text = "0")
+
 x = 110 
 y = 110
 while x < 820 : 
@@ -40,9 +45,11 @@ for j in range (4):
         print (j, i)
         tableau[j][i] = valcer
         print (tableau[j][i])
-
+        
+nbr_graine_mangees_j1 = 0
+nbr_graine_mangees_j2 = 0
 def adgr(event):
-    global tableau
+    global tableau, nbr_graine_mangees_j1, nbr_graine_mangees_j2
     clic_x = event.x
     clic_y = event.y 
     
@@ -205,13 +212,32 @@ def adgr(event):
                     can.itemconfig(tableau[li][co],text = str(jeu[li][co]))
                     dern_li = li - 1
                     dern_co = 7- (val - (7-co) - 1)
-        if jeu[dern_li][dern_co] == 1:
+        
+        if jeu[dern_li][dern_co] == 1: #si dernière graine attérit dans une case vide
+            if dern_li == 2: #joueur 1 prend les graines de l'adversaire
+                
+                
+                
+                total = nbr_graine_mangees_j1 + jeu[dern_li-1][dern_co] #la cagnotte totale devient l'addition des graines capturées et des graines venant d'être capturées
+                can.itemconfig(graines_j1, text = str(total))#afficher le total des graines capturés par le joueur 1
+                nbr_graine_mangees_j1 = total #le nombre de graines dans la cagnotte devient le nouveau point de départ
+                jeu[dern_li-1][dern_co] = 0
+                can.itemconfig(tableau[dern_li-1][dern_co],text = str(jeu[dern_li-1][dern_co]))
+                
+            elif dern_li == 1: #joueur 2
+                total = nbr_graine_mangees_j2 + jeu[dern_li+1][dern_co] #la cagnotte totale devient l'addition des graines capturées et des graines venant d'être capturées
+                can.itemconfig(graines_j2, text = str(total))#afficher le total des graines capturés par le joueur 2
+                nbr_graine_mangees_j2 = total 
+                
+                jeu[dern_li+1][dern_co] = 0
+                can.itemconfig(tableau[dern_li+1][dern_co],text = str(jeu[dern_li+1][dern_co]))
             break
-        elif jeu[dern_li][dern_co] > 1:
+        
+            
+        if jeu[dern_li][dern_co] > 1:
             li = dern_li
             co = dern_co
-            print(jeu)
-            print (li, co)
+            
         if dern_li == 3:
             clic_y = 350
         if dern_li == 2:
@@ -220,7 +246,11 @@ def adgr(event):
             clic_y = 150
         if dern_li == 0:
             clic_y = 50
-    print (jeu)
+        time.sleep(3)
+        
+        
+                
+    
             
             
             
