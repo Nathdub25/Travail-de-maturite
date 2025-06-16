@@ -1,5 +1,6 @@
 
 from tkinter import *
+from tkinter import messagebox
 import time
 
 fen = Tk()
@@ -60,6 +61,10 @@ def adgr(event):
         
         dern_li = li
         dern_co = co
+        if jeu[li][co] == 0:
+            messagebox.askokcancel("Case vide", "Vous avez cliqué sur une case vide")
+            return
+                
         if clic_y > 240 and clic_y < 340: #3ème rangée
             if jeu[li][co] <= co: #si nmbr de graine plus petit que nmbr de trou suivants
                 val = jeu[li][co]
@@ -223,11 +228,15 @@ def adgr(event):
                 nbr_graine_mangees_j1 = total #le nombre de graines dans la cagnotte devient le nouveau point de départ
                 jeu[dern_li-1][dern_co] = 0
                 can.itemconfig(tableau[dern_li-1][dern_co],text = str(jeu[dern_li-1][dern_co]))
+                if total == 32:
+                    messagebox.askokcancel("Fin de la partie", "Le joueur 1 remporte la partie!!")
                 
             elif dern_li == 1: #joueur 2
                 total = nbr_graine_mangees_j2 + jeu[dern_li+1][dern_co] #la cagnotte totale devient l'addition des graines capturées et des graines venant d'être capturées
                 can.itemconfig(graines_j2, text = str(total))#afficher le total des graines capturés par le joueur 2
                 nbr_graine_mangees_j2 = total 
+                if total == 32:
+                    messagebox.askokcancel("Fin de la partie", "Le joueur 2 remporte la partie!!")
                 
                 jeu[dern_li+1][dern_co] = 0
                 can.itemconfig(tableau[dern_li+1][dern_co],text = str(jeu[dern_li+1][dern_co]))
@@ -238,6 +247,7 @@ def adgr(event):
             li = dern_li
             co = dern_co
             
+            
         if dern_li == 3:
             clic_y = 350
         if dern_li == 2:
@@ -246,7 +256,7 @@ def adgr(event):
             clic_y = 150
         if dern_li == 0:
             clic_y = 50
-        time.sleep(3)
+        
         
         
                 
@@ -266,7 +276,9 @@ can.bind('<Button-1>', adgr)
     
     
     
-
+'''questions :
+Comment faire pour qu'une seule personne puisse jouer à chaque tour? --> tourner le jeu?
+Comment faire pour qu'on ait le temps de visualiser?--> animations'''
 
 
 
