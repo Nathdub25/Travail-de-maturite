@@ -707,3 +707,31 @@ Voici le code pour le joueur 2 :
         jeu[dern_li+1][dern_co] = 0
         can.itemconfig(tableau[dern_li+1][dern_co],text = str(jeu[dern_li+1][dern_co]))
 
+Maintenant que le jeu est fonctionnel, il y a cependant quelques petits problèmes à modifier, notamment le fait que python bug lorsqu'on appuie sur un trou vide. Un autre problème, c'est qu'il n'y a pas de fin. J'aimerais alors faire apparaitre une fenêtre à la fin de la partie et à chaque fois qu'on clique sur une case vide. Pour ça, je me suis renseigné sur ce site : https://blog.alphorm.com/utiliser-tkinter-messagebox-python#tkinter-askokcancel-confirmation-okannuler qui explique le principe du messagebox.
+
+j'ai donc mis ce code :
+
+          if jeu[li][co] == 0:
+            messagebox.askokcancel("Case vide", "Vous avez cliqué sur une case vide")
+            return
+
+Et celui-la : 
+
+    if total == 32:
+                    messagebox.askokcancel("Fin de la partie", "Le joueur 1 remporte la partie!!")
+                    return
+
+Voila, maintenant j'ai remplacé les nombres par des points (..), pour transformer les points en valeur, j'ai juste pris la fonction len(). Le code marche avec ses points, et maintenant, une chose que j'aimerais régler c'est à qui de jouer. Le joueur 1 ne devrait pas pouvoir jouer 2 fois de suite. Avant ça, il faut faire en sorte que ce soit le premier joueur qui commence, et que la ligne du haut (comme dans les règles). J'ai donc ajouté ce code au début:
+(Avec prm_tour = 1 au départ, en dehors de la boucle)
+
+      if prm_tour == 1:
+        if li == 0 or li == 1:
+            messagebox.askokcancel("Mauvais joueur", "Ce n'est pas à vous de commencer.")
+            return
+        if li == 3:
+            messagebox.askokcancel("coup illégal", "Vous ne pouvez pas commencer à jouer sur cette rangée, veuillez choisir un emplacement sur la 3ème rangée.")
+            return
+        if li == 3:
+            prm_tour == 2
+
+Donc tant qu'on ne clique pas sur li = 3, prm_tour vaut 1, donc les messages s'afficheront en boucle tant qu'on clique pas sur la bonne rangée.
