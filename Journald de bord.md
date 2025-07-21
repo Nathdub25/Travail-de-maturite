@@ -735,3 +735,32 @@ Voila, maintenant j'ai remplacé les nombres par des points (..), pour transform
             prm_tour == 2
 
 Donc tant qu'on ne clique pas sur li = 3, prm_tour vaut 1, donc les messages s'afficheront en boucle tant qu'on clique pas sur la bonne rangée.
+
+    if prm_tour == 2:
+        if li == 2 or li == 3:
+            messagebox.askokcancel("Mauvais joueur", "Ce n'est pas à vous de jouer.")
+            return
+        if li == 0:
+            messagebox.askokcancel("coup illégal", "Vous ne pouvez pas commencer à jouer sur cette rangée, veuillez choisir un emplacement sur la 3ème rangée.")
+            return
+        if li == 1:
+            prm_tour = 3
+
+J'ai utilisé ici le même principe pour le premier coup du joueur 2, qui rejoint prm_tour == 2. Il faut pas oublier de placer ce if avant celui du joueur 1, pour éviter que dès que prm_tour = 2, il enchaine direct avec les lignes de ce que je viens d'écrire.
+
+    if breakboucle == 1:
+        if dern_li == 3 or dern_li == 2:
+            if li == 3 or li == 2:
+                messagebox.askokcancel("Mauvais joueur", "Ce n'est pas à vous de jouer.")
+                return
+            else :
+                breakboucle = 2
+        if dern_li == 0 or dern_li == 1:
+            if li == 0 or li == 1:
+                messagebox.askokcancel("Mauvais joueur", "Ce n'est pas à vous de jouer.")
+                return
+            else :
+                breakboucle = 2
+
+Pareil, ici breakboucle vaut 1 seulement quand on sort de la boucle while True, et que du coup toutes les nouvelles cordonnées sont calculées, en sauvegardant dern_li du clic d'avant.
+Maintenant, les animations des graines
