@@ -763,4 +763,21 @@ J'ai utilisé ici le même principe pour le premier coup du joueur 2, qui rejoin
                 breakboucle = 2
 
 Pareil, ici breakboucle vaut 1 seulement quand on sort de la boucle while True, et que du coup toutes les nouvelles cordonnées sont calculées, en sauvegardant dern_li du clic d'avant.
-Maintenant, les animations des graines
+Maintenant, les animations des graines.
+
+Je commence par tracer les trajets que les graines vont faire. Pour ça, j'ai d'abord décidé de définir une fonction qui permet de calculer le centre de chaque case :
+
+    def centre_case(ligne, colonne) :
+        x = colonne * 100 + 60
+        y = ligne * 100 + 60
+        return x,y
+
+Ainsi, je peux calculer le centre de la case de départ d'une graine et la case d'arrivée et tracer une ligne entre ces 2 points.
+J'ai donc ajouté ces lignes dans mon code dans la boucle for k in range:
+
+    x1, y1 = centre_case(li, co)
+    x2, y2 = centre_case(li, co-k)
+                    
+    can.create_line(x1, y1, x2, y2, fill="blue")
+
+centre_case(li,co), appelle la fonction et permet de calculer le centre de la case du clic, la case de départ. centre_case(li, co-k) permet de calculer la case d'arrivée, qui change à chaque fois suivant le nombre de graines (for k in range). Can.create_line trace finalement une ligne entre ces 2 cases. Dans mon code, j'ai donc ajouté ces lignes pour chaque cas de figure en changeant quelques variables pour que le tout fonctionne. Le résultat peut paraître bizarre, mais étant donné que les lignes sont superposées, le résultat reste celui que j'attendais. Maintenant, il me reste plus qu'à faire en sorte que les graines suivent ces lignes.
