@@ -8,6 +8,7 @@ fen = Tk()
 fen.geometry("820x600")
 can = Canvas(fen, width=820, height=500)
 can.grid()
+can.pack()
 can.create_rectangle (10,10,810,410)
 can.create_text (150, 450, text = "Player 1 : ", font = 200)
 can.create_text (550, 450, text = "Player 2 : ", font = 200)
@@ -61,7 +62,10 @@ Aquiletour = 2
 breakboucle = 2
 def adgr(event):
     global tableau, nbr_graine_mangees_j1, nbr_graine_mangees_j2, dern_li, prm_tour, Aquiletour, breakboucle
-    
+    def centre_case(ligne, colonne) :
+        x = colonne * 100 + 60
+        y = ligne * 100 + 60
+        return x,y
     clic_x = event.x
     clic_y = event.y 
     
@@ -121,11 +125,7 @@ def adgr(event):
         dern_li = li
         dern_co = co
         
-        def déplacement_gr( x, y, x0, y0):
-            global dern_co, dern_li, li, co, clic_x
-            
-            
-            can.create_line (x, y, x0, y0)
+        
         if len(jeu[li][co]) == 0:
             messagebox.askokcancel("Case vide", "Vous avez cliqué sur une case vide")
             return
@@ -141,6 +141,11 @@ def adgr(event):
                     can.itemconfig(tableau[li][co-k], text = "." * nombre)
                     jeu[li][co] = ""
                     can.itemconfig(tableau[li][co],text = jeu[li][co])
+                    x1, y1 = centre_case(li, co)
+                    x2, y2 = centre_case(li, co-k)
+                    
+                    can.create_line(x1, y1, x2, y2, fill="blue")
+                    can.update()
                 dern_co = co-val
                 dern_li = li
                 
@@ -155,6 +160,11 @@ def adgr(event):
                         can.itemconfig(tableau[li+1][h], text="."*nombre)
                         jeu[li][co] = ""
                         can.itemconfig(tableau[li][co],text = jeu[li][co])
+                        x1, y1 = centre_case(li, co)
+                        x2, y2 = centre_case(li+1, co+h)
+                    
+                        can.create_line(x1, y1, x2, y2, fill="blue")
+                        can.update()
                     dern_li = li + 1
                     
                     dern_co = co + val -1
@@ -164,17 +174,27 @@ def adgr(event):
                 elif co > 0:
                     #les trous suivants + la ligne du dssous
                     val = len(jeu[li][co])
+                    
                     for g in range(1, co+1):
                         
                         jeu[li][co-g] = jeu[li][co-g] + "."
                         nombre = len(jeu[li][co-g]) 
                         can.itemconfig(tableau[li][co - g],text = "."*nombre)
+                        x1, y1 = centre_case(li, co)
+                        x2, y2 = centre_case(li, co-g)
+                        
+                        can.create_line(x1, y1, x2, y2, fill="blue")
+                        can.update()
                     for h in range(0, val-co):
                         
                         jeu[li+1][h] = jeu[li+1][h] + "." 
                         nombre = len(jeu[li+1][h]) 
                         can.itemconfig(tableau[li+1][h], text = "."*nombre)
+                        x1, y1 = centre_case(li, co)
+                        x2, y2 = centre_case(li+1,h)
                         
+                        can.create_line(x1, y1, x2, y2, fill="blue")
+                        can.update()
                     jeu[li][co] = ""
                     can.itemconfig(tableau[li][co],text = jeu[li][co])
                     dern_li = li + 1
@@ -193,6 +213,11 @@ def adgr(event):
                     can.itemconfig(tableau[li][co + k],text = "."*nombre)
                     jeu[li][co] = ""
                     can.itemconfig(tableau[li][co],text = jeu[li][co])
+                    x1, y1 = centre_case(li, co)
+                    x2, y2 = centre_case(li, co+k)
+                    
+                    can.create_line(x1, y1, x2, y2, fill="blue")
+                    can.update()
                 dern_co = co + val
                 
             else:
@@ -205,22 +230,37 @@ def adgr(event):
                         can.itemconfig(tableau[li-1][7-h], text="."*nombre)
                         jeu[li][co] = ""
                         can.itemconfig(tableau[li][co],text = jeu[li][co])
+                        x1, y1 = centre_case(li, co)
+                        x2, y2 = centre_case(li-1, co-h)
+                        
+                        can.create_line(x1, y1, x2, y2, fill="blue")
+                        can.update()
                     dern_li = li - 1
                     dern_co = 7-val+1
                     
                 else: #distribuer ligne du dessus + trou qui restent
                     val = len(jeu[li][co])
+                    
                     for g in range(1, 7-co+1):
                         
                         jeu[li][co+g] = jeu[li][co+g] + "."
                         nombre = len(jeu[li][co+g])
                         can.itemconfig(tableau[li][co + g],text = "."*nombre)
+                        x1, y1 = centre_case(li, co)
+                        x2, y2 = centre_case(li, co+g)
+                        
+                        can.create_line(x1, y1, x2, y2, fill="blue")
+                        can.update()
                     for h in range(0, val-(7-co)):
                         
                         jeu[li-1][7-h] = jeu[li-1][7-h] + "."
                         nombre = len(jeu[li-1][7-h])
                         can.itemconfig(tableau[li-1][7-h], text = "."*nombre)
+                        x1, y1 = centre_case(li, co)
+                        x2, y2 = centre_case(li-1, 7-h)
                         
+                        can.create_line(x1, y1, x2, y2, fill="blue")
+                        can.update()
                     jeu[li][co] = ""
                     can.itemconfig(tableau[li][co],text = jeu[li][co])
                     dern_li = li - 1
@@ -359,7 +399,7 @@ def adgr(event):
             clic_y = 150
         if dern_li == 0:
             clic_y = 50
-        
+        can.update
         
         
         
