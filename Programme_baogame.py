@@ -48,12 +48,21 @@ tableau = [[None]*8 for i in range(0,4)]
 
 for j in range (4):
     for i in range (len(jeu[0])):
-        valcer = can.create_text(i*100 + 60,j*100 + 55, text = str(jeu[j][i]), font = 150)
+        valcer = can.create_text(i*100 + 60,j*100 + 55, text = str(jeu[j][i]), font = ("Times", 20))
         #valcer1 = can.create_oval(i*100 + 30, j*100 + 30, i*100 + 50, j*100 + 50)
         print (j, i)
         tableau[j][i] = valcer
         print (tableau[j][i])
-
+dx = -2
+dy = 0
+valcer = can.create_text(x,y,text="coucou")
+def Deplacegraine():
+    global x, y, dx, dy, valcer #dx=déplacement x
+    x = x +dx
+    y = y + dy
+    can.coords(valcer,x,y)
+    
+    fen.after(30, Deplacegraine)
 
 nbr_graine_mangees_j1 = 0
 nbr_graine_mangees_j2 = 0
@@ -62,6 +71,9 @@ Aquiletour = 2
 breakboucle = 2
 def adgr(event):
     global tableau, nbr_graine_mangees_j1, nbr_graine_mangees_j2, dern_li, prm_tour, Aquiletour, breakboucle
+    global dx,dy, Deplacegraine
+    
+    
     def centre_case(ligne, colonne) :
         x = colonne * 100 + 60
         y = ligne * 100 + 60
@@ -119,9 +131,20 @@ def adgr(event):
                 return
             if li == 1 or li == 0:
                 Aquiletour = 2'''
-    
+    x = event.x
+    y = event.y
+    valcer = can.create_text(x,y,text=".")
     while True :
         
+            
+        x = x + dx
+        y = y + dy
+        
+        
+        print ("coords :", can.coords(valcer))
+        can.coords(valcer, x, y)
+        fen.update()
+        time.sleep(0.7)
         dern_li = li
         dern_co = co
         
@@ -132,8 +155,13 @@ def adgr(event):
                 
         if clic_y > 240 and clic_y < 340: #3ème rangée
             
+            
             if len(jeu[li][co]) <= co: #si nmbr de graine plus petit que nmbr de trou suivants
                 val = len(jeu[li][co])
+                
+                
+                
+                
                 for k in range(1, val+1): # + 1 trous suivants
                 
                     jeu[li][co-k] = "."  + jeu[li][co-k]
@@ -144,8 +172,9 @@ def adgr(event):
                     x1, y1 = centre_case(li, co)
                     x2, y2 = centre_case(li, co-k)
                     
-                    can.create_line(x1, y1, x2, y2, fill="blue")
+                    #can.create_line(x1, y1, x2, y2, fill="blue")
                     can.update()
+                    
                 dern_co = co-val
                 dern_li = li
                 
@@ -163,7 +192,7 @@ def adgr(event):
                         x1, y1 = centre_case(li, co)
                         x2, y2 = centre_case(li+1, co+h)
                     
-                        can.create_line(x1, y1, x2, y2, fill="blue")
+                        #can.create_line(x1, y1, x2, y2, fill="blue")
                         can.update()
                     dern_li = li + 1
                     
@@ -183,7 +212,7 @@ def adgr(event):
                         x1, y1 = centre_case(li, co)
                         x2, y2 = centre_case(li, co-g)
                         
-                        can.create_line(x1, y1, x2, y2, fill="blue")
+                        #can.create_line(x1, y1, x2, y2, fill="blue")
                         can.update()
                     for h in range(0, val-co):
                         
@@ -193,7 +222,7 @@ def adgr(event):
                         x1, y1 = centre_case(li, co)
                         x2, y2 = centre_case(li+1,h)
                         
-                        can.create_line(x1, y1, x2, y2, fill="blue")
+                        #can.create_line(x1, y1, x2, y2, fill="blue")
                         can.update()
                     jeu[li][co] = ""
                     can.itemconfig(tableau[li][co],text = jeu[li][co])
@@ -216,7 +245,7 @@ def adgr(event):
                     x1, y1 = centre_case(li, co)
                     x2, y2 = centre_case(li, co+k)
                     
-                    can.create_line(x1, y1, x2, y2, fill="blue")
+                    #can.create_line(x1, y1, x2, y2, fill="blue")
                     can.update()
                 dern_co = co + val
                 
@@ -233,7 +262,7 @@ def adgr(event):
                         x1, y1 = centre_case(li, co)
                         x2, y2 = centre_case(li-1, co-h)
                         
-                        can.create_line(x1, y1, x2, y2, fill="blue")
+                        #can.create_line(x1, y1, x2, y2, fill="blue")
                         can.update()
                     dern_li = li - 1
                     dern_co = 7-val+1
@@ -249,7 +278,7 @@ def adgr(event):
                         x1, y1 = centre_case(li, co)
                         x2, y2 = centre_case(li, co+g)
                         
-                        can.create_line(x1, y1, x2, y2, fill="blue")
+                        #can.create_line(x1, y1, x2, y2, fill="blue")
                         can.update()
                     for h in range(0, val-(7-co)):
                         
@@ -259,7 +288,7 @@ def adgr(event):
                         x1, y1 = centre_case(li, co)
                         x2, y2 = centre_case(li-1, 7-h)
                         
-                        can.create_line(x1, y1, x2, y2, fill="blue")
+                        #can.create_line(x1, y1, x2, y2, fill="blue")
                         can.update()
                     jeu[li][co] = ""
                     can.itemconfig(tableau[li][co],text = jeu[li][co])
