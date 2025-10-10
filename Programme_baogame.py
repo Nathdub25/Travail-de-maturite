@@ -45,7 +45,7 @@ while z < 420:
     
 
 jeu =[[".."]*8 for i in range(4)] #détermination de la valeur des cases de la matrice de "..", soit deux graines
-print (jeu)
+#print (jeu)
 tableau = [[None]*8 for i in range(0,4)] # transfère des valeurs dans une matrice vide, étant enregistrées
 #la matrice "jeu" contient donc deux graines par case, 4 rangées et 8 trous par rangée, pouvant être modifié
 
@@ -59,10 +59,10 @@ for j in range (2,4):
     for i in range (len(jeu[0])):
         valcer = can.create_text(i*100 + 60,j*100 + 55, text = str(jeu[j][i]),fill="red" ,font = ("Times", 25)) #affichage des graines visuellement
         #(servait à comprendre quand ça ne marchait pas)
-        '''print (j, i)        
+        print (j, i)        
         print (j, i)
         tableau[j][i] = valcer
-        print (tableau[j][i])'''
+        print (tableau[j][i])
 #indique le joueur qui doit commencer
 messagebox.askokcancel(" ","Joueur 1, c'est à vous de commencer")
 
@@ -386,9 +386,6 @@ def adgr(event):
         
         if len(jeu[dern_li][dern_co]) == 1: #si dernière graine attérit dans une case vide
             if dern_li == 2: #si la case vide se situe sur la rangée du haut (joueur 1)
-                
-                
-                
                 total = nbr_graine_mangees_j1 + len(jeu[dern_li-1][dern_co]) #la cagnotte totale devient l'addition des graines capturées et des graines venant d'être capturées
                 can.itemconfig(graines_j1, text = str(total))#afficher le total des graines capturés par le joueur 1
                 nbr_graine_mangees_j1 = total #le nombre de graines dans la cagnotte devient le nouveau point de départ
