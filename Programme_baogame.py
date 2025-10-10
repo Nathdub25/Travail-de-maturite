@@ -2,18 +2,20 @@
 from tkinter import *
 from tkinter import messagebox
 import time
+import tkinter.font as tkFont
 
 fen = Tk()
-
+font50 = tkFont.Font(family="Times", size=50)
 fen.geometry("820x600")
 can = Canvas(fen, width=820, height=500)
 can.grid()
 can.pack()
 can.create_rectangle (10,10,810,410)
-can.create_text (150, 450, text = "Player 1 : ", font = 200)
-can.create_text (550, 450, text = "Player 2 : ", font = 200)
+
+p1= can.create_text (150, 450, text = "Player 1, compteur de graines : ",fill ="red", font = ("Times", 15) )
+p2 = can.create_text (650, 450, text = "Player 2, compteur de graines : ",fill = "blue", font= ("Times", 15) )
 graines_j1 = can.create_text(150,480, text = "0", font = 150)
-graines_j2 = can.create_text(550,480, text = "0", font = 150)
+graines_j2 = can.create_text(650,480, text = "0", font = 150)
 
 x = 110 
 y = 110
@@ -40,22 +42,27 @@ while z < 420:
     cy = 20
     
 
-jeu =[[".."]*8 for i in range(4)]
+jeu =[[".."]*8 for i in range(4)] #détermination de la valeur des cases de la matrice de "..", soit deux graines
 print (jeu)
-tableau = [[None]*8 for i in range(0,4)]
-#print (tableau[0][0])
+tableau = [[None]*8 for i in range(0,4)] # transfère des valeurs dans une matrice vide, étant enregistrées
+#la matrice "jeu" contient donc deux graines par case, 4 rangées et 8 trous par rangée, pouvant être modifié
 
 
-for j in range (4):
+for j in range (0,2): 
     for i in range (len(jeu[0])):
-        valcer = can.create_text(i*100 + 60,j*100 + 55, text = str(jeu[j][i]), font = ("Times", 20))
-        #valcer1 = can.create_oval(i*100 + 30, j*100 + 30, i*100 + 50, j*100 + 50)
+        valcer = can.create_text(i*100 + 60,j*100 + 55, text = str(jeu[j][i]),fill="blue" ,font = ("Times", 25)) #affichage des graines visuellement
+        tableau[j][i] = valcer
+for j in range (2,4): 
+    for i in range (len(jeu[0])):
+        valcer = can.create_text(i*100 + 60,j*100 + 55, text = str(jeu[j][i]),fill="red" ,font = ("Times", 25)) #affichage des graines visuellement
+        
+        print (j, i)        
         print (j, i)
         tableau[j][i] = valcer
         print (tableau[j][i])
 dx = -2
 dy = 0
-valcer = can.create_text(x,y,text="coucou")
+#valcer = can.create_text(x,y,text="coucou")
 def Deplacegraine():
     global x, y, dx, dy, valcer #dx=déplacement x
     x = x +dx
@@ -63,7 +70,7 @@ def Deplacegraine():
     can.coords(valcer,x,y)
     
     fen.after(30, Deplacegraine)
-
+messagebox.askokcancel(" ","Joueur 1, c'est à vous de commencer")
 nbr_graine_mangees_j1 = 0
 nbr_graine_mangees_j2 = 0
 prm_tour = 1
@@ -78,11 +85,11 @@ def adgr(event):
         x = colonne * 100 + 60
         y = ligne * 100 + 60
         return x,y
-    clic_x = event.x
-    clic_y = event.y 
+    clic_x = event.x #cordonnées de x = cordonnées x du clic
+    clic_y = event.y #idem pour y
     
-    co = clic_x // 100 
-    li = clic_y // 100 
+    co = clic_x // 100 #numéro de colonne correspondant à x
+    li = clic_y // 100 #idem pour y
     if breakboucle == 1:
         if dern_li == 3 or dern_li == 2:
             if li == 3 or li == 2:
@@ -95,8 +102,11 @@ def adgr(event):
                 messagebox.askokcancel("Mauvais joueur", "Ce n'est pas à vous de jouer.")
                 return
             else :
+                
                 breakboucle = 2
-    if prm_tour == 2:
+    if prm_tour == 2: #premier coup joueur 2
+        can.itemconfig(p2, font = ("Times", 15))
+        can.itemconfig(p1, font = ("Times", 15, "bold"))
         if li == 2 or li == 3:
             messagebox.askokcancel("Mauvais joueur", "Ce n'est pas à vous de jouer.")
             return
@@ -107,6 +117,8 @@ def adgr(event):
             prm_tour = 3
             Aquiletour = 1
     if prm_tour == 1: #premier coup du joueur 1
+        can.itemconfig(p2, font = ("Times", 15))
+        can.itemconfig(p1, font = ("Times", 15, "bold"))
         if li == 0 or li == 1: #si on clique en premier sur les trous du joueur 2
             messagebox.askokcancel("Mauvais joueur", "Ce n'est pas à vous de commencer.")
             return
@@ -133,18 +145,22 @@ def adgr(event):
                 Aquiletour = 2'''
     x = event.x
     y = event.y
-    valcer = can.create_text(x,y,text=".")
+    #valcer = can.create_text(x,y,text=".")
     while True :
-        
-            
+        if prm_tour == 1: #premier coup du joueur 1
+            can.itemconfig(p2, font = ("Times", 15))
+            can.itemconfig(p1, font = ("Times", 15, "bold"))
+        if prm_tour == 2: #premier coup joueur 2
+            can.itemconfig(p2, font = ("Times", 15))
+            can.itemconfig(p1, font = ("Times", 15, "bold"))    
         x = x + dx
         y = y + dy
         
         
         print ("coords :", can.coords(valcer))
-        can.coords(valcer, x, y)
+        #can.coords(valcer, x, y)
         fen.update()
-        time.sleep(0.7)
+        time.sleep(1.5)
         dern_li = li
         dern_co = co
         
@@ -165,8 +181,8 @@ def adgr(event):
                 for k in range(1, val+1): # + 1 trous suivants
                 
                     jeu[li][co-k] = "."  + jeu[li][co-k]
-                    nombre = len(jeu[li][co-k])
-                    can.itemconfig(tableau[li][co-k], text = "." * nombre)
+                    nombre = len(jeu[li][co-k])#nombre de  graines dans une case
+                    can.itemconfig(tableau[li][co-k], text = "." * nombre) #remplace la valeur de la case par le nombre de graine correspondant
                     jeu[li][co] = ""
                     can.itemconfig(tableau[li][co],text = jeu[li][co])
                     x1, y1 = centre_case(li, co)
@@ -278,7 +294,8 @@ def adgr(event):
                         x1, y1 = centre_case(li, co)
                         x2, y2 = centre_case(li, co+g)
                         
-                        #can.create_line(x1, y1, x2, y2, fill="blue")
+                        #
+                        # can.create_line(x1, y1, x2, y2, fill="blue")
                         can.update()
                     for h in range(0, val-(7-co)):
                         
@@ -395,7 +412,10 @@ def adgr(event):
                 total = nbr_graine_mangees_j1 + len(jeu[dern_li-1][dern_co]) #la cagnotte totale devient l'addition des graines capturées et des graines venant d'être capturées
                 can.itemconfig(graines_j1, text = str(total))#afficher le total des graines capturés par le joueur 1
                 nbr_graine_mangees_j1 = total #le nombre de graines dans la cagnotte devient le nouveau point de départ
+                can.itemconfig(tableau[dern_li-1][dern_co],text = str(jeu[dern_li-1][dern_co]), font = font50)
+                time.sleep(0.9)
                 jeu[dern_li-1][dern_co] = ""
+                
                 can.itemconfig(tableau[dern_li-1][dern_co],text = jeu[dern_li-1][dern_co])
                 if total == 32:
                     messagebox.askokcancel("Fin de la partie", "Le joueur 1 remporte la partie!!")
