@@ -783,3 +783,9 @@ J'ai donc ajouté ces lignes dans mon code dans la boucle for k in range:
 centre_case(li,co), appelle la fonction et permet de calculer le centre de la case du clic, la case de départ. centre_case(li, co-k) permet de calculer la case d'arrivée, qui change à chaque fois suivant le nombre de graines (for k in range). Can.create_line trace finalement une ligne entre ces 2 cases. Dans mon code, j'ai donc ajouté ces lignes pour chaque cas de figure en changeant quelques variables pour que le tout fonctionne. Le résultat peut paraître bizarre, mais étant donné que les lignes sont superposées, le résultat reste celui que j'attendais. Maintenant, il me reste plus qu'à faire en sorte que les graines suivent ces lignes.
 
 Je pensais le faire en 3 étapes : calculer la prochaine position du point (donc un pixel plus loin), effacer le point précédant et le redessiner à cette position.
+
+Finalement, je me suis décidé d'utiliser la fonction can.sleep(), qui fait une pause après chaque déplacement. De cette manière, le joueur arrive à suivre la partie et le code ne doit pas être complètement refait à cause des animations. 
+
+Après quelques modifications dans la couleur des graines et du temps des pauses, voila le code terminé ! 
+
+Je suis conscient qu'au tout début du journal, j'ai affirmé que j'allais encore coder l'intelligence artificielle qui permet de jouer contre un joueur, mais malheureusement le code en tant que tel pour deux joueurs a bien pris le temps que j'avais à disposition. Mais comme le disait mon mentor au début, au moins j'ai un code terminé, ce qui n'aurait pas été le cas si je m'étais attaqué directement à l'IA.
