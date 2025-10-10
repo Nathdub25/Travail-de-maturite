@@ -781,3 +781,5 @@ J'ai donc ajouté ces lignes dans mon code dans la boucle for k in range:
     can.create_line(x1, y1, x2, y2, fill="blue")
 
 centre_case(li,co), appelle la fonction et permet de calculer le centre de la case du clic, la case de départ. centre_case(li, co-k) permet de calculer la case d'arrivée, qui change à chaque fois suivant le nombre de graines (for k in range). Can.create_line trace finalement une ligne entre ces 2 cases. Dans mon code, j'ai donc ajouté ces lignes pour chaque cas de figure en changeant quelques variables pour que le tout fonctionne. Le résultat peut paraître bizarre, mais étant donné que les lignes sont superposées, le résultat reste celui que j'attendais. Maintenant, il me reste plus qu'à faire en sorte que les graines suivent ces lignes.
+
+Je pensais le faire en 3 étapes : calculer la prochaine position du point (donc un pixel plus loin), effacer le point précédant et le redessiner à cette position.
