@@ -786,6 +786,11 @@ Je pensais le faire en 3 étapes : calculer la prochaine position du point (donc
 
 Finalement, je me suis décidé d'utiliser la fonction can.sleep(), qui fait une pause après chaque déplacement. De cette manière, le joueur arrive à suivre la partie et le code ne doit pas être complètement refait à cause des animations. 
 
-Après quelques modifications dans la couleur des graines et du temps des pauses, voila le code terminé ! 
+J'ai encore ajouté une ultime modification pour améliorer au maximum l'interface avec les joueurs, c'est l'apparission d'un message lorsque le tour d'un joueur est terminé. J'ai ajouté ce code pour chaque cas de figure du numéro de rangée où se situe le trou vide dans lequel attérit la dernière graine :
+
+    messagebox.askokcancel("Fin du tour", "C'est au tour du joueur 2 de jouer.")
+(joueur 1 si c'est le joueur 2 qui a joué)
+
+Après quelques modifications dans la couleur des graines et de l'affichage des numéros de lignes, voila le code terminé ! 
 
 Je suis conscient qu'au tout début du journal, j'ai affirmé que j'allais encore coder l'intelligence artificielle qui permet de jouer contre un joueur, mais malheureusement le code en tant que tel pour deux joueurs a bien pris le temps que j'avais à disposition. Mais comme le disait mon mentor au début, au moins j'ai un code terminé, ce qui n'aurait pas été le cas si je m'étais attaqué directement à l'IA.
